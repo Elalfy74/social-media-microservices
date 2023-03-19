@@ -1,0 +1,23 @@
+{
+  "name": "@ms-social-media/common",
+  "version": "1.0.1",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "description": "",
+  "scripts": {
+    "clean": "del ./dist/*",
+    "build": "npm run clean && tsc",
+    "pub": "npm version patch && npm run build && npm publish",
+    "pub-with-commit": "git add . && git commit -m \"Updates\" && npm run pub"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@nestjs/common": "^9.3.10",
+    "kafkajs": "^2.2.4"
+  }
+}
