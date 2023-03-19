@@ -1,16 +1,29 @@
 import { Injectable, OnApplicationShutdown } from '@nestjs/common';
 import { Message } from 'kafkajs';
 
-import { IProducer } from './interfaces';
+import { IProducer, Topic } from './interfaces';
 import { KafkajsProducer } from './kafkajs.producer';
 
+interface ProducerEvent {
+  topic: Topic;
+  message: Omit<Message, 'value'> & {
+    value: any;
+  };
+}
+
 @Injectable()
-export class ProducerService implements OnApplicationShutdown {
+export class ProducerService<T extends ProducerEvent>
+  implements OnApplicationShutdown
+{
   private readonly producers = new Map<string, IProducer>();
 
-  async produce(topic: string, message: Message) {
+  async produce(topic: T['topic'], message: T['message']) {
     const producer = await this.getProducer(topic);
-    await producer.produce(message);
+
+    await producer.produce({
+      ...message,
+      value: JSON.stringify(message.value),
+    });
   }
 
   private async getProducer(topic: string) {

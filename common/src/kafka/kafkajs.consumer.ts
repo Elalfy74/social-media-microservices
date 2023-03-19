@@ -16,7 +16,7 @@ export class KafkajsConsumer implements IConsumer {
 
   constructor(
     private readonly topic: ConsumerSubscribeTopics,
-    config: ConsumerConfig,
+    config: ConsumerConfig
   ) {
     this.kafka = new Kafka({ brokers: ['localhost:29092'] });
     this.consumer = this.kafka.consumer(config);
@@ -30,10 +30,13 @@ export class KafkajsConsumer implements IConsumer {
       eachMessage: async ({ message, partition }) => {
         try {
           await onMessage(message);
+          this.logger.log(
+            `Successfully received message ${JSON.parse(message.value)}`
+          );
         } catch (err) {
           this.logger.error(
             'Error consuming message. Adding to dead letter queue...',
-            err,
+            err
           );
           // await this.addMessageToDlq(message);
         }

@@ -17,18 +17,19 @@ export class KafkajsProducer implements IProducer {
   }
 
   async produce(message: Message) {
-    console.log(this.topic, message);
     await this.producer.send({ topic: this.topic, messages: [message] });
+
+    this.logger.log(`Message Published Successfully ${message.value}`);
   }
 
   async connect() {
     try {
-      console.log('Trying CONNECTED');
+      this.logger.log('Trying Connecting on Producer');
 
       await this.producer.connect();
-      console.log('CONNECTED');
+      this.logger.log('CONNECTED on Producer');
     } catch (err) {
-      this.logger.error('Failed to connect to Kafka.', err);
+      this.logger.error('Failed to connect to Kafka on producer.', err);
     }
   }
 
