@@ -14,4 +14,4 @@ services:
     ports:
       - 3000:3000
     depends_on:
-     - auth-db
+      - auth-db
