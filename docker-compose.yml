@@ -12,7 +12,7 @@ services:
       
   auth:
     image: mssocialmedia/auth
-    command: sh -c " npx prisma migrate deploy && yarn start "
+    command: sh -c " npx prisma migrate deploy && npx prisma generate && yarn start "
     ports:
       - 3000:3000
     depends_on:
