@@ -1,6 +1,6 @@
 {
   "name": "@ms-social-media/common",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -18,6 +18,8 @@
   "license": "ISC",
   "dependencies": {
     "@nestjs/common": "^9.3.10",
+    "@nestjs/config": "^2.3.1",
+    "@prisma/client": "^4.11.0",
     "kafkajs": "^2.2.4"
   }
 }

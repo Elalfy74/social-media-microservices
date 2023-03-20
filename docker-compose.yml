@@ -9,9 +9,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: auth
-  auth:
-    image: mohamedbedier/authsvc:v3
-    ports:
-      - 3000:3000
-    depends_on:
-      - auth-db
+  # auth:
+  #   image: mssocialmedia/auth
+  #   ports:
+  #     - 3000:3000
+  #   depends_on:
+  #     - auth-db
