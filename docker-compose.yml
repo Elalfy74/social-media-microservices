@@ -9,10 +9,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: auth
+      
   auth:
-    image: mohamedbedier/authsvc:v3
-    command: sh -c " npx prisma migrate deploy && yarn run start "
+    image: mssocialmedia/auth
+    command: sh -c " npx prisma migrate deploy && yarn start "
     ports:
       - 3000:3000
     depends_on:
-     - auth-db
+      - auth-db

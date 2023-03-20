@@ -1,9 +1,16 @@
-import { Body, Controller, Get, HttpCode, Post, Session } from '@nestjs/common';
-import { UseGuards } from '@nestjs/common/decorators';
+import { AuthGuard } from '@ms-social-media/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  Session,
+  UseGuards,
+} from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { AuthDto } from './dtos';
-import { AuthGuard } from './guards';
 
 @Controller('auth')
 export class AuthController {

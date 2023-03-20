@@ -1,11 +1,10 @@
+import { PrismaService } from '@ms-social-media/common';
 import {
   BadRequestException,
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
 import { compare, hash } from 'bcryptjs';
-
-import { PrismaService } from '@/prisma/prisma.service';
 
 import { AuthDto } from './dtos';
 

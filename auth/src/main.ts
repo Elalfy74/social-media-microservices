@@ -1,6 +1,5 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import * as cookieParser from 'cookie-parser';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cookieSession = require('cookie-session');
 
@@ -20,8 +19,6 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-
-  app.use(cookieParser());
 
   await app.listen(3000);
 }
