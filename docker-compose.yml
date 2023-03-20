@@ -22,8 +22,7 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKAJS_NO_PARTITIONER_WARNING: 1
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
-      services:
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
   auth-db:
     image: postgres:13
     ports:
@@ -32,3 +31,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: auth
+  auth:
+    image: mohamedbedier/autchsvc:v2
+    ports:
+      - 3000:3000
+    depends_on:
+     - auth-db
