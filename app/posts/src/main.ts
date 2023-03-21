@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { PostsModule } from './posts.module';
@@ -10,6 +11,12 @@ async function bootstrap() {
   app.use(
     cookieSession({
       keys: ['random_string'],
+    }),
+  );
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
     }),
   );
 

@@ -1,36 +1,38 @@
-import { AuthGuard } from '@ms-social-media/common';
+import { AuthGuard, ISession } from '@ms-social-media/common';
 import {
   Body,
   Controller,
+  Get,
   Post,
+  Session,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
+import { CreatePostDto } from './dtos';
 import { PostsService } from './posts.service';
-import { S3Service } from './s3.service';
 
 @Controller('posts')
 export class AppController {
-  constructor(
-    private readonly postsService: PostsService,
-    private readonly s3Service: S3Service,
-  ) {}
+  constructor(private readonly postsService: PostsService) {}
 
   @Post()
   @UseGuards(AuthGuard)
-  @UseInterceptors(FileInterceptor('img'))
-  async create(@Body() body: any, @UploadedFile() file: Express.Multer.File) {
-    // console.log(body.title);
-    // console.log(file);
-
-    const url = await this.s3Service.addFileToBucket(file);
-
-    console.log(url);
+  @UseInterceptors(FileInterceptor('file'))
+  async create(
+    @Body() createPostDto: CreatePostDto,
+    @UploadedFile() file: Express.Multer.File,
+    @Session() session: ISession,
+  ) {
+    return this.postsService.create(createPostDto, file, session);
   }
 
+  @Get()
+  find(@Session() session?: ISession) {
+    return this.postsService.find(session);
+  }
   // @Get()
   // getHello() {
   //   return this.postsService.getHello();

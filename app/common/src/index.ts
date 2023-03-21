@@ -6,3 +6,5 @@ export * from './kafka/interfaces';
 export * from './prisma/prisma.module';
 export * from './prisma/prisma.service';
 export * from './guards/auth.guard';
+
+export * from './interfaces';
