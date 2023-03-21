@@ -1,0 +1,19 @@
+apiVersion: skaffold/v4beta2
+kind: Config
+build:
+  artifacts:
+    - image: mssocialmedia/auth
+      context: ../app/auth
+      sync:
+        manual:
+          - src: src/**/*.ts
+            dest: .
+      docker:
+        dockerfile: Dockerfile
+  local:
+    push: true
+manifests:
+  rawYaml:
+    - ../k8s/*
+deploy:
+  kubectl: {}
