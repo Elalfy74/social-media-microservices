@@ -15,10 +15,11 @@ model Post {
   title    String
   imageUrl String
   userId   String
+  username String
 
-  createdAt DateTime @default(now())
-  comments  Int
-  likes     Like[]
+  createdAt     DateTime @default(now())
+  commentsCount Int      @default(0)
+  likes         Like[]
 }
 
 model Like {

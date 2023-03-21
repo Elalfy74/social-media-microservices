@@ -1,4 +1,4 @@
-import { AuthGuard } from '@ms-social-media/common';
+import { AuthGuard, ISession } from '@ms-social-media/common';
 import {
   Body,
   Controller,
@@ -17,31 +17,37 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
-  async signup(@Body() dto: AuthDto, @Session() session: { userId: string }) {
+  async signup(@Body() dto: AuthDto, @Session() session: ISession) {
     const savedUser = await this.authService.signup(dto);
 
     session.userId = savedUser.id;
+    session.username = savedUser.username;
+
     return savedUser;
   }
 
   @Post('login')
   @HttpCode(200)
-  async login(@Body() dto: AuthDto, @Session() session: { userId: string }) {
+  async login(@Body() dto: AuthDto, @Session() session: ISession) {
     const user = await this.authService.login(dto);
 
     session.userId = user.id;
+    session.username = user.username;
+
     return user;
   }
 
   @Post('signout')
   @HttpCode(200)
-  signout(@Session() session: { userId: string }) {
+  signout(@Session() session: ISession) {
     session.userId = null;
+    session.username = null;
   }
 
   @Get('whoami')
   @UseGuards(AuthGuard)
-  getMe(@Session() session: { userId: string }) {
-    return this.authService.whoami(session.userId);
+  getMe(@Session() session: ISession) {
+    // return this.authService.whoami(session.userId);
+    return session;
   }
 }

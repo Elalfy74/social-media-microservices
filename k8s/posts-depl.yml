@@ -1,34 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-deployment
+  name: posts-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth
+      app: posts
   template:
     metadata:
       labels:
-        app: auth
+        app: posts
     spec:
       containers:
-        - name: auth
-          image: mssocialmedia/auth
+        - name: posts
+          image: mssocialmedia/posts
           command: ["sh", "-c", "npx prisma migrate deploy && yarn start"]
           env:
             - name: DATABASE_URL
-              value: "postgresql://postgres:123@auth-db-svc:5432/auth?schema=public"
+              value: "postgresql://postgres:123@posts-db-svc:5432/posts?schema=public"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-svc
+  name: posts-svc
 spec:
   selector:
-    app: auth
+    app: posts
   ports:
-    - name: auth
+    - name: posts
       protocol: TCP
-      port: 3000
-      targetPort: 3000
+      port: 3001
+      targetPort: 3001

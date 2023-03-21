@@ -10,8 +10,17 @@ build:
             dest: .
       docker:
         dockerfile: Dockerfile
+    - image: mssocialmedia/posts
+      context: ../app/posts
+      sync:
+        manual:
+          - src: src/**/*.ts
+            dest: .
+      docker:
+        dockerfile: Dockerfile
+
   local:
-    push: true
+    push: false
 manifests:
   rawYaml:
     - ../k8s/*

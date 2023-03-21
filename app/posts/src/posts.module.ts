@@ -1,15 +1,22 @@
-import { KafkaModule } from '@ms-social-media/common';
+import { KafkaModule, PrismaModule } from '@ms-social-media/common';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 
 import { TestConsumer } from '@/test.consumer';
 
+import { S3Service } from './aws/s3.service';
 import { AppController } from './posts.controller';
 import { PostsService } from './posts.service';
-import { S3Service } from './s3.service';
 
 @Module({
   // imports: [KafkaModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    PrismaModule,
+  ],
   controllers: [AppController],
-  providers: [PostsService, S3Service],
+  providers: [PostsService],
 })
 export class PostsModule {}
