@@ -687,10 +687,10 @@
   resolved "https://registry.yarnpkg.com/@lukeed/csprng/-/csprng-1.0.1.tgz#625e93a0edb2c830e3c52ce2d67b9d53377c6a66"
   integrity sha512-uSvJdwQU5nK+Vdf6zxcWAY2A8r7uqe+gePwLWzJ+fsQehq18pc0I2hJKwypZ2aLM90+Er9u1xn4iLJPZ+xlL4g==
 
-"@ms-social-media/common@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@ms-social-media/common/-/common-1.0.7.tgz#35e476bd7341772d864a29ced120262ccb434e54"
-  integrity sha512-3vQWXZXDOozJSG/ksl28sn1yDSz/Hhaf1081x7qy/wq1oINmm6Uw65CIXFH6ptE/sMYgisRGQczJjsXMdBK1Zg==
+"@ms-social-media/common@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@ms-social-media/common/-/common-1.0.8.tgz#4bd5b99c7a09ffdcdb29702eeaca99d11b462553"
+  integrity sha512-ob9wimFx+f9ZFxioxjPmP/ZdxRdoQN1u9gHR/FNRunfB2hBveIOWIwtBrd8URC0EJyVGpbIcJ1RapARzoz+EyQ==
   dependencies:
     "@nestjs/common" "^9.3.10"
     "@nestjs/config" "^2.3.1"
@@ -923,13 +923,6 @@
   integrity sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==
   dependencies:
     "@types/node" "*"
-
-"@types/cookie-parser@^1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@types/cookie-parser/-/cookie-parser-1.4.3.tgz#3a01df117c5705cf89a84c876b50c5a1fd427a21"
-  integrity sha512-CqSKwFwefj4PzZ5n/iwad/bow2hTCh0FlNAeWLtQM3JA/NX/iYagIpWG2cf1bQKQ2c9gU2log5VUCrn7LDOs0w==
-  dependencies:
-    "@types/express" "*"
 
 "@types/cookie-session@^2.0.44":
   version "2.0.44"

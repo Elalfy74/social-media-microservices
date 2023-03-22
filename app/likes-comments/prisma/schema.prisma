@@ -10,11 +10,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id       String @id() @default(uuid())
-  username String @unique
-  password String
+model Like {
+  userId String
+  postId String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@id([userId, postId])
+}
+
+model Comment {
+  id     String @id @default(uuid())
+  userId String
+  postId String
+  body   String
 }

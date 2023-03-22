@@ -18,7 +18,7 @@ export class KafkajsConsumer implements IConsumer {
     private readonly topic: ConsumerSubscribeTopics,
     config: ConsumerConfig
   ) {
-    this.kafka = new Kafka({ brokers: ['localhost:29092'] });
+    this.kafka = new Kafka({ brokers: ['localhost:9092'] });
     this.consumer = this.kafka.consumer(config);
     this.logger = new Logger(`${topic.topics}-${config.groupId}`);
   }

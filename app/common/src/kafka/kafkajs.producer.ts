@@ -10,7 +10,7 @@ export class KafkajsProducer implements IProducer {
 
   constructor(private readonly topic: string) {
     this.kafka = new Kafka({
-      brokers: ['localhost:29092'],
+      brokers: ['localhost:9092'],
     });
     this.producer = this.kafka.producer();
     this.logger = new Logger(topic);
