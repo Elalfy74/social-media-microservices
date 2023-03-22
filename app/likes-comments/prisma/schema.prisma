@@ -10,9 +10,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Post {
+  id String @id
+
+  likes    Like[]
+  comments Comment[]
+}
+
 model Like {
   userId String
   postId String
+
+  Post Post @relation(fields: [postId], references: [id])
 
   @@id([userId, postId])
 }
@@ -21,5 +30,8 @@ model Comment {
   id     String @id @default(uuid())
   userId String
   postId String
-  body   String
+
+  Post Post @relation(fields: [postId], references: [id])
+
+  body String
 }

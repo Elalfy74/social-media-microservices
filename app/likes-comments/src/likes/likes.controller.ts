@@ -1,17 +1,15 @@
-import { ISession } from '@ms-social-media/common';
-import { AuthGuard } from '@ms-social-media/common/dist/guards/auth.guard';
+import { AuthGuard, ISession } from '@ms-social-media/common';
 import {
   Body,
   Controller,
   Delete,
-  Get,
-  Param,
   Post,
+  Query,
   Session,
   UseGuards,
 } from '@nestjs/common';
 
-import { CreateLikeDto } from './dtos';
+import { CreateLikeDto, RemoveLikeDto } from './dtos';
 import { LikesService } from './likes.service';
 
 @Controller('/api/likes')
@@ -24,14 +22,9 @@ export class LikesController {
     return this.likesService.create(createLikeDto, session.userId);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.likesService.findAll();
-  // }
-
-  @Delete(':postId')
+  @Delete()
   @UseGuards(AuthGuard)
-  remove(@Param('postId') postId: string, @Session() session: ISession) {
-    return this.likesService.remove(postId, session.userId);
+  remove(@Query() query: RemoveLikeDto, @Session() session: ISession) {
+    return this.likesService.remove(query.postId, session.userId);
   }
 }
