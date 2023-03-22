@@ -20,12 +20,13 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.296.0",
     "@ms-social-media/common": "^1.0.7",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
-    "@types/cookie-session": "^2.0.44",
+    "@prisma/client": "^4.11.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "cookie-session": "^2.0.0",
@@ -36,6 +37,7 @@
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
+    "@types/cookie-session": "^2.0.44",
     "@types/express": "^4.17.13",
     "@types/jest": "29.2.4",
     "@types/multer": "^1.4.7",

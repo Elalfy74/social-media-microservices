@@ -15,7 +15,12 @@ spec:
       containers:
         - name: posts
           image: mssocialmedia/posts
-          command: ["sh", "-c", "npx prisma migrate deploy && yarn start"]
+          command:
+            [
+              "sh",
+              "-c",
+              "npx prisma migrate deploy && npx prisma generate && yarn start:dev",
+            ]
           env:
             - name: DATABASE_URL
               value: "postgresql://postgres:123@posts-db-svc:5432/posts?schema=public"

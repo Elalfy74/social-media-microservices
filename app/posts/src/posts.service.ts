@@ -42,12 +42,12 @@ export class PostsService {
     });
   }
 
-  async find(session?: ISession) {
+  async find(session: ISession) {
     return this.prisma.post.findMany({
       include: {
         likes: {
           where: {
-            userId: session.userId,
+            userId: session.userId || undefined,
           },
         },
         _count: {

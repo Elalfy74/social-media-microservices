@@ -30,7 +30,7 @@ export class AppController {
   }
 
   @Get()
-  find(@Session() session?: ISession) {
+  find(@Session() session: ISession) {
     return this.postsService.find(session);
   }
   // @Get()
