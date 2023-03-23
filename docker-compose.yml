@@ -13,8 +13,8 @@ services:
       - '9092:9092'
     environment:
       - KAFKA_BROKER_ID=1
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_CFG_LISTENERS=KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,PLAINTEXT://localhost:9092
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
     depends_on:
@@ -28,12 +28,12 @@ services:
     command: |
       '
       # blocks until kafka is reachable
-      bin/kafka-topics.sh --bootstrap-server kafka:9092 --list
+      kafka-topics.sh --bootstrap-server kafka:9092 --list
 
-      bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic flight.email.topic  --replication-factor 1 --partitions 2
+      kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic flight.email.topic  --replication-factor 1 --partitions 2
      
       echo -e 'Created kafka topics:'
-      bin/kafka-topics.sh --bootstrap-server kafka:9092 --list
+      kafka-topics.sh --bootstrap-server kafka:9092 --list
       '
   auth-db:
     image: postgres:13
