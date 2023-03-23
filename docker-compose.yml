@@ -33,7 +33,12 @@ services:
       kafka-topics.sh --bootstrap-server kafka:9092 --list
 
       kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic post.created.topic  --replication-factor 1 --partitions 2
-     
+      
+      kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic like.created.topic  --replication-factor 1 --partitions 2 
+      kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic like.removed.topic  --replication-factor 1 --partitions 2
+      
+      kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic comment.created.topic  --replication-factor 1 --partitions 2
+
       echo -e 'Created kafka topics:'
       kafka-topics.sh --bootstrap-server kafka:9092 --list
       '
@@ -63,4 +68,12 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: posts
+  likes-comments-db:
+    image: postgres:13
+    ports:
+      - 5436:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: likes-comments
       

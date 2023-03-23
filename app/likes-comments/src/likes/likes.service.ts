@@ -1,32 +1,54 @@
-import { PrismaService } from '@ms-social-media/common';
+import {
+  PLikeCreatedEvent,
+  PLikeRemovedEvent,
+  PrismaService,
+  ProducerService,
+  Topic,
+} from '@ms-social-media/common';
 import { Injectable } from '@nestjs/common';
 
 import { CreateLikeDto } from './dtos';
 
 @Injectable()
 export class LikesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly createdProducer: ProducerService<PLikeCreatedEvent>,
+    private readonly removedProducer: ProducerService<PLikeRemovedEvent>,
+  ) {}
 
-  create(createLikeDto: CreateLikeDto, userId: string) {
-    return this.prisma.like.create({
+  async create(createLikeDto: CreateLikeDto, userId: string) {
+    const like = await this.prisma.like.create({
       data: {
         ...createLikeDto,
         userId,
       },
     });
+
+    this.createdProducer.produce(Topic.LikeCreated, {
+      value: {
+        postId: like.postId,
+        userId: like.userId,
+      },
+    });
+
+    return like;
   }
 
-  // findAll() {
-  //   return `This action returns all likes`;
-  // }
-
-  remove(postId: string, userId: string) {
-    return this.prisma.like.delete({
+  async remove(postId: string, userId: string) {
+    const like = await this.prisma.like.delete({
       where: {
         userId_postId: {
           postId,
           userId,
         },
+      },
+    });
+
+    this.removedProducer.produce(Topic.LikeRemoved, {
+      value: {
+        postId: like.postId,
+        userId: like.userId,
       },
     });
   }

@@ -1,28 +1,31 @@
 import {
   ConsumerService,
   CPostCreatedEvent,
+  PrismaService,
   Topic,
 } from '@ms-social-media/common';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 
 @Injectable()
-export class TestConsumer implements OnModuleInit {
+export class PostsConsumer implements OnModuleInit {
   constructor(
-    private readonly consumerService: ConsumerService<CPostCreatedEvent>,
+    private readonly consumer: ConsumerService<CPostCreatedEvent>,
+    private readonly prisma: PrismaService,
   ) {}
 
   async onModuleInit() {
-    await this.consumerService.consume({
+    await this.consumer.consume({
       topic: { topics: [Topic.PostCreated] },
-      config: { groupId: 'test-consumer' },
+      config: { groupId: 'post-created' },
       onMessage: async (message) => {
-        // console.log(typeof message);
-
+        await this.prisma.post.create({
+          data: {
+            id: message.value.postId,
+          },
+        });
         console.log(
           'Message received At CustomConsumer' + message.value.postId,
-          // JSON.parse(message.value.toString()).postId,
         );
-        // throw new Error('Test error!');
       },
     });
   }
