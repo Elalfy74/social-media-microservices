@@ -1,19 +1,25 @@
-import { ConsumerService } from '@ms-social-media/common';
-import { Topic } from '@ms-social-media/common/dist/kafka/interfaces';
+import { ConsumerService, Topic } from '@ms-social-media/common';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 
 @Injectable()
 export class TestConsumer implements OnModuleInit {
   constructor(
-    private readonly consumerService: ConsumerService<{ topic: Topic.Test }>,
+    private readonly consumerService: ConsumerService<{
+      topic: Topic.PostCreated;
+    }>,
   ) {}
 
   async onModuleInit() {
     await this.consumerService.consume({
-      topic: { topics: [Topic.Test] },
+      topic: { topics: [Topic.PostCreated] },
       config: { groupId: 'test-consumer' },
       onMessage: async (message) => {
-        console.log(JSON.parse(message.value.toString()));
+        // console.log(typeof message);
+
+        console.log(
+          'Message received At CustomConsumer',
+          // JSON.parse(message.value.toString()).postId,
+        );
         // throw new Error('Test error!');
       },
     });

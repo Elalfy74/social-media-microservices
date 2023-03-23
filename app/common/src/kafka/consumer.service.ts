@@ -1,7 +1,8 @@
 import { Injectable, OnApplicationShutdown } from '@nestjs/common';
 import { ConsumerConfig, ConsumerSubscribeTopics, KafkaMessage } from 'kafkajs';
+import { Topic } from './events';
 
-import { IConsumer, Topic } from './interfaces';
+import { IConsumer } from './interfaces';
 import { KafkajsConsumer } from './kafkajs.consumer';
 
 export interface ConsumerEvent {
