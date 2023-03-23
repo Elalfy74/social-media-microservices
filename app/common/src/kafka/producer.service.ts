@@ -1,15 +1,9 @@
 import { Injectable, OnApplicationShutdown } from '@nestjs/common';
-import { Message } from 'kafkajs';
+import { PPostCreatedEvent, Topic } from './events';
+import { ProducerEvent } from './events/base/base-event';
 
-import { IProducer, Topic } from './interfaces';
+import { IProducer } from './interfaces';
 import { KafkajsProducer } from './kafkajs.producer';
-
-interface ProducerEvent {
-  topic: Topic;
-  message: Omit<Message, 'value'> & {
-    value: any;
-  };
-}
 
 @Injectable()
 export class ProducerService<T extends ProducerEvent>

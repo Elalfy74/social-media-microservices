@@ -1,6 +1,6 @@
 {
   "name": "@ms-social-media/common",
-  "version": "1.0.7",
+  "version": "1.0.14",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -8,7 +8,7 @@
   ],
   "description": "",
   "scripts": {
-    "clean": "del /f .\\dist\\* ",
+    "clean": "del /f .\\dist\\* -y",
     "build": "npm run clean && tsc",
     "pub": "npm version patch && npm run build && npm publish",
     "pub-with-commit": "git add . && git commit -m \"Updates\" && npm run pub"
@@ -21,5 +21,8 @@
     "@nestjs/config": "^2.3.1",
     "@prisma/client": "^4.11.0",
     "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.5"
   }
 }

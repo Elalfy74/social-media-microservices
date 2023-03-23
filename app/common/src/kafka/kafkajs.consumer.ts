@@ -4,12 +4,12 @@ import {
   ConsumerConfig,
   ConsumerSubscribeTopics,
   Kafka,
-  KafkaMessage,
 } from 'kafkajs';
+import { ConsumerEvent } from './events';
 
 import { IConsumer } from './interfaces';
 
-export class KafkajsConsumer implements IConsumer {
+export class KafkajsConsumer<T extends ConsumerEvent> implements IConsumer {
   private readonly kafka: Kafka;
   private readonly consumer: Consumer;
   private readonly logger: Logger;
@@ -23,16 +23,20 @@ export class KafkajsConsumer implements IConsumer {
     this.logger = new Logger(`${topic.topics}-${config.groupId}`);
   }
 
-  async consume(onMessage: (message: KafkaMessage) => Promise<void>) {
+  async consume(onMessage: (message: T['message']) => Promise<void>) {
     await this.consumer.subscribe(this.topic);
 
     await this.consumer.run({
       eachMessage: async ({ message, partition }) => {
         try {
-          await onMessage(message);
-          this.logger.log(
-            `Successfully received message ${JSON.parse(message.value)}`
-          );
+          const parsedValue = this.parseValue(message.value);
+
+          await onMessage({
+            ...message,
+            value: parsedValue,
+          });
+
+          this.logger.log(`Successfully received message ${parsedValue}`);
         } catch (err) {
           this.logger.error(
             'Error consuming message. Adding to dead letter queue...',
@@ -63,5 +67,9 @@ export class KafkajsConsumer implements IConsumer {
 
   async disconnect() {
     await this.consumer.disconnect();
+  }
+
+  private parseValue(value: Buffer) {
+    return JSON.parse(value.toString());
   }
 }

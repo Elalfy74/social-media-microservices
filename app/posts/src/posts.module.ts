@@ -9,14 +9,14 @@ import { AppController } from './posts.controller';
 import { PostsService } from './posts.service';
 
 @Module({
-  // imports: [KafkaModule],
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     PrismaModule,
+    KafkaModule,
   ],
   controllers: [AppController],
-  providers: [PostsService],
+  providers: [PostsService, TestConsumer],
 })
 export class PostsModule {}
