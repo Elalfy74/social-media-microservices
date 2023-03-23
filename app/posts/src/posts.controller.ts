@@ -14,7 +14,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreatePostDto } from './dtos';
 import { PostsService } from './posts.service';
 
-@Controller('posts')
+@Controller('/api/posts')
 export class AppController {
   constructor(private readonly postsService: PostsService) {}
 

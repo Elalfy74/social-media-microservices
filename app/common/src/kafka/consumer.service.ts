@@ -1,19 +1,16 @@
 import { Injectable, OnApplicationShutdown } from '@nestjs/common';
-import { ConsumerConfig, ConsumerSubscribeTopics, KafkaMessage } from 'kafkajs';
+import { ConsumerConfig, ConsumerSubscribeTopics } from 'kafkajs';
+import { ConsumerEvent } from './events';
 
-import { IConsumer, Topic } from './interfaces';
+import { IConsumer } from './interfaces';
 import { KafkajsConsumer } from './kafkajs.consumer';
 
-export interface ConsumerEvent {
-  topic: Topic;
-}
-
-interface KafkajsConsumerOptions<T extends Topic> {
-  topic: ConsumerSubscribeTopics & {
-    topics: T[];
+interface KafkajsConsumerOptions<T extends ConsumerEvent> {
+  topic: Omit<ConsumerSubscribeTopics, 'topics'> & {
+    topics: [T['topic']];
   };
   config: ConsumerConfig;
-  onMessage: (message: KafkaMessage) => Promise<void>;
+  onMessage: (message: T['message']) => Promise<void>;
 }
 
 @Injectable()
@@ -22,12 +19,8 @@ export class ConsumerService<T extends ConsumerEvent>
 {
   private readonly consumers: IConsumer[] = [];
 
-  async consume({
-    topic,
-    config,
-    onMessage,
-  }: KafkajsConsumerOptions<T['topic']>) {
-    const consumer = new KafkajsConsumer(topic, config);
+  async consume({ topic, config, onMessage }: KafkajsConsumerOptions<T>) {
+    const consumer = new KafkajsConsumer<T>(topic, config);
 
     await consumer.connect();
 
