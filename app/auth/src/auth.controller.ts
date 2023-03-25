@@ -1,4 +1,4 @@
-import { AuthGuard, ISession } from '@ms-social-media/common';
+import { AuthGuard, ISession, Serialize } from '@ms-social-media/common';
 import {
   Body,
   Controller,
@@ -10,9 +10,10 @@ import {
 } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
-import { AuthDto } from './dtos';
+import { AuthDto, UserDto } from './dtos';
 
 @Controller('/api/auth')
+@Serialize(UserDto)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
