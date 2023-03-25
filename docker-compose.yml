@@ -50,15 +50,15 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: auth
-  # auth:
-  #   image: mssocialmedia/auth
-  #   command: sh -c " npx prisma migrate deploy && npx prisma generate && yarn start "
-  #   ports:
-  #     - 3000:3000
-  #   environment:
-  #     DATABASE_URL: postgresql://postgres:123@auth-db:5432/auth?schema=public
-  #   depends_on:
-  #     - auth-db
+  auth:
+    image: mssocialmedia/auth
+    command: sh -c " npx prisma migrate deploy && npx prisma generate && yarn start:dev "
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URL: postgresql://postgres:123@auth-db:5432/auth?schema=public
+    depends_on:
+      - auth-db
 
   posts-db:
     image: postgres:13
@@ -76,4 +76,3 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: likes-comments
-      

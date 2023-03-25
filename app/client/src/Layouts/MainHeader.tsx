@@ -1,4 +1,4 @@
-import { Header, Group, Button, Text, Container } from '@mantine/core';
+import { Header, Group, Text, Container } from '@mantine/core';
 import { AuthActions } from '@/components/Auth';
 
 export function MainHeader() {
