@@ -1,4 +1,5 @@
 import { Header, Group, Button, Text, Container } from '@mantine/core';
+import { AuthActions } from '@/components/Auth';
 
 export function MainHeader() {
   return (
@@ -9,10 +10,7 @@ export function MainHeader() {
           <Text size={30} c="blue" fw="bold">
             MS
           </Text>
-          <Group>
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
-          </Group>
+          <AuthActions />
         </Group>
       </Container>
     </Header>

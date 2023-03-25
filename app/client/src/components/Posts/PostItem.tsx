@@ -1,5 +1,15 @@
-import { Card, Image, Text, Group, createStyles, Button, rem, Title } from '@mantine/core';
-import { IconHeart, IconMessage2 } from '@tabler/icons-react';
+import {
+  Card,
+  Image,
+  Text,
+  Group,
+  createStyles,
+  Button,
+  rem,
+  Title,
+  ActionIcon,
+} from '@mantine/core';
+import { IconHeart, IconHeartFilled, IconMessage2 } from '@tabler/icons-react';
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -52,10 +62,16 @@ export function PostItem() {
         <Group spacing={30} position="apart">
           <Group>
             <Group align="center" spacing={4}>
-              <IconHeart /> 2
+              <ActionIcon variant="subtle" radius="xl" size="lg" color="red">
+                <IconHeart />
+              </ActionIcon>
+              <Text>2</Text>
             </Group>
             <Group align="center" spacing={4}>
-              <IconMessage2 /> 3
+              <ActionIcon variant="subtle" radius="xl" size="lg" color="blue">
+                <IconMessage2 />
+              </ActionIcon>
+              <Text>3</Text>
             </Group>
           </Group>
           <Button>Comment</Button>
