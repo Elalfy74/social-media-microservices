@@ -1,12 +1,13 @@
 import { MainLayout } from '@/Layouts';
 import { ThemeProvider } from './ThemeProvider';
-import { Welcome } from './Welcome/Welcome';
+import { NewPost, PostList } from '@/components';
 
 export default function App() {
   return (
     <ThemeProvider>
       <MainLayout>
-        <Welcome />
+        <NewPost />
+        <PostList />
       </MainLayout>
     </ThemeProvider>
   );
