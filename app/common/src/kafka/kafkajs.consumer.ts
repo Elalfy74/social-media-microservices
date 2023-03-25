@@ -36,7 +36,9 @@ export class KafkajsConsumer<T extends ConsumerEvent> implements IConsumer {
             value: parsedValue,
           });
 
-          this.logger.log(`Successfully received message ${parsedValue}`);
+          this.logger.log(
+            `Successfully received message ${message.value.toString()}`
+          );
         } catch (err) {
           this.logger.error(
             'Error consuming message. Adding to dead letter queue...',
