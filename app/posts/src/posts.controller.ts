@@ -1,4 +1,4 @@
-import { AuthGuard, ISession } from '@ms-social-media/common';
+import { AuthGuard, ISession, Serialize } from '@ms-social-media/common';
 import {
   Body,
   Controller,
@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { CreatePostDto } from './dtos';
+import { CreatePostDto, PostResponse } from './dtos';
 import { PostsService } from './posts.service';
 
 @Controller('/api/posts')
@@ -30,6 +30,7 @@ export class AppController {
   }
 
   @Get()
+  @Serialize(PostResponse)
   find(@Session() session: ISession) {
     return this.postsService.find(session);
   }

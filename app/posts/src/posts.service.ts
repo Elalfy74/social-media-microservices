@@ -68,13 +68,4 @@ export class PostsService {
       },
     });
   }
-
-  // async getHello() {
-  //   await this.producerService.produce(Topic.Test, {
-  //     value: {
-  //       name: 'Mahmoud',
-  //     },
-  //   });
-  //   return 'Hello World!';
-  // }
 }

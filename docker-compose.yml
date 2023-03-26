@@ -30,10 +30,13 @@ services:
     command: |
       '
       # blocks until kafka is reachable
-      bin/kafka-topics.sh --bootstrap-server kafka:9092 --list
-
-      bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic flight.email.topic  --replication-factor 1 --partitions 2
-     
+      kafka-topics.sh --bootstrap-server kafka:9092 --list
+      kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic post.created.topic  --replication-factor 1 --partitions 2
+      
+      kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic like.created.topic  --replication-factor 1 --partitions 2 
+      kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic like.removed.topic  --replication-factor 1 --partitions 2
+      
+      kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic comment.created.topic  --replication-factor 1 --partitions 2
       echo -e 'Created kafka topics:'
       kafka-topics.sh --bootstrap-server kafka:9092 --list
       '
