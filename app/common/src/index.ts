@@ -9,3 +9,5 @@ export * from './prisma/prisma.service';
 export * from './guards/auth.guard';
 
 export * from './interfaces';
+
+export * from './interceptors';

@@ -16,9 +16,10 @@ export class KafkajsConsumer<T extends ConsumerEvent> implements IConsumer {
 
   constructor(
     private readonly topic: ConsumerSubscribeTopics,
-    config: ConsumerConfig
+    config: ConsumerConfig,
+    brokerUrl: string
   ) {
-    this.kafka = new Kafka({ brokers: ['localhost:29092'] });
+    this.kafka = new Kafka({ brokers: [brokerUrl] });
     this.consumer = this.kafka.consumer(config);
     this.logger = new Logger(`${topic.topics}-${config.groupId}`);
   }
@@ -36,7 +37,9 @@ export class KafkajsConsumer<T extends ConsumerEvent> implements IConsumer {
             value: parsedValue,
           });
 
-          this.logger.log(`Successfully received message ${parsedValue}`);
+          this.logger.log(
+            `Successfully received message ${message.value.toString()}`
+          );
         } catch (err) {
           this.logger.error(
             'Error consuming message. Adding to dead letter queue...',

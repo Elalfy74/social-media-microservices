@@ -687,15 +687,17 @@
   resolved "https://registry.yarnpkg.com/@lukeed/csprng/-/csprng-1.0.1.tgz#625e93a0edb2c830e3c52ce2d67b9d53377c6a66"
   integrity sha512-uSvJdwQU5nK+Vdf6zxcWAY2A8r7uqe+gePwLWzJ+fsQehq18pc0I2hJKwypZ2aLM90+Er9u1xn4iLJPZ+xlL4g==
 
-"@ms-social-media/common@^1.0.16":
-  version "1.0.16"
-  resolved "https://registry.yarnpkg.com/@ms-social-media/common/-/common-1.0.16.tgz#4aecd5367336c67dbeca7b5ebcb853685df92fc1"
-  integrity sha512-AbBHmQzOCrsQQvP/KLysrFTV8LnGir8V95d9boQ3k3k/wS646uMhwZuunKcyvov6nId+uNkFTayCHJoAC+sZlA==
+"@ms-social-media/common@^1.0.20":
+  version "1.0.20"
+  resolved "https://registry.yarnpkg.com/@ms-social-media/common/-/common-1.0.20.tgz#886acaa1c85905108ed7352f4c725d88f13c5262"
+  integrity sha512-QgHiEAzIUYwmRj89mGk2xt+Y2kYLkjtuFTPV9LgE5zMiQ5ZCtEalemU4gajKqsHfTPRQvriqBrvENjZLQhxKsQ==
   dependencies:
     "@nestjs/common" "^9.3.10"
     "@nestjs/config" "^2.3.1"
     "@prisma/client" "^4.11.0"
+    class-transformer "^0.5.1"
     kafkajs "^2.2.4"
+    rxjs "^7.8.0"
 
 "@nestjs/cli@^9.0.0":
   version "9.3.0"
@@ -4212,7 +4214,7 @@ rxjs@6.6.7:
   dependencies:
     tslib "^1.9.0"
 
-rxjs@^7.2.0, rxjs@^7.5.5:
+rxjs@^7.2.0, rxjs@^7.5.5, rxjs@^7.8.0:
   version "7.8.0"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.8.0.tgz#90a938862a82888ff4c7359811a595e14e1e09a4"
   integrity sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==

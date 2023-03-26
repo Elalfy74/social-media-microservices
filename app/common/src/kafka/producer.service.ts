@@ -1,5 +1,5 @@
 import { Injectable, OnApplicationShutdown } from '@nestjs/common';
-import { PPostCreatedEvent, Topic } from './events';
+import { ConfigService } from '@nestjs/config';
 import { ProducerEvent } from './events/base/base-event';
 
 import { IProducer } from './interfaces';
@@ -9,6 +9,8 @@ import { KafkajsProducer } from './kafkajs.producer';
 export class ProducerService<T extends ProducerEvent>
   implements OnApplicationShutdown
 {
+  constructor(private configService: ConfigService) {}
+
   private readonly producers = new Map<string, IProducer>();
 
   async produce(topic: T['topic'], message: T['message']) {
@@ -22,8 +24,12 @@ export class ProducerService<T extends ProducerEvent>
 
   private async getProducer(topic: string) {
     let producer = this.producers.get(topic);
+
     if (!producer) {
-      producer = new KafkajsProducer(topic);
+      producer = new KafkajsProducer(
+        topic,
+        this.configService.get('BROKER_URL')
+      );
 
       await producer.connect();
 
