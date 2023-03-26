@@ -1,4 +1,5 @@
 import { Injectable, OnApplicationShutdown } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ConsumerConfig, ConsumerSubscribeTopics } from 'kafkajs';
 import { ConsumerEvent } from './events';
 
@@ -17,10 +18,16 @@ interface KafkajsConsumerOptions<T extends ConsumerEvent> {
 export class ConsumerService<T extends ConsumerEvent>
   implements OnApplicationShutdown
 {
+  constructor(private configService: ConfigService) {}
+
   private readonly consumers: IConsumer[] = [];
 
   async consume({ topic, config, onMessage }: KafkajsConsumerOptions<T>) {
-    const consumer = new KafkajsConsumer<T>(topic, config);
+    const consumer = new KafkajsConsumer<T>(
+      topic,
+      config,
+      this.configService.get('BROKER_URL')
+    );
 
     await consumer.connect();
 

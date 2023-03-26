@@ -687,10 +687,10 @@
   resolved "https://registry.yarnpkg.com/@lukeed/csprng/-/csprng-1.0.1.tgz#625e93a0edb2c830e3c52ce2d67b9d53377c6a66"
   integrity sha512-uSvJdwQU5nK+Vdf6zxcWAY2A8r7uqe+gePwLWzJ+fsQehq18pc0I2hJKwypZ2aLM90+Er9u1xn4iLJPZ+xlL4g==
 
-"@ms-social-media/common@^1.0.19":
-  version "1.0.19"
-  resolved "https://registry.yarnpkg.com/@ms-social-media/common/-/common-1.0.19.tgz#f0ef00587a5e3f074d97ccd47ff2a40a9276d6fe"
-  integrity sha512-ezeWP6XnjZYVablciD+QpgcpzTbbWzbpkq5fbUQpw9cXd0BoWTcfngCANP6A19WU8E6Bdn0bFoCH4xP23dVjGQ==
+"@ms-social-media/common@^1.0.20":
+  version "1.0.20"
+  resolved "https://registry.yarnpkg.com/@ms-social-media/common/-/common-1.0.20.tgz#886acaa1c85905108ed7352f4c725d88f13c5262"
+  integrity sha512-QgHiEAzIUYwmRj89mGk2xt+Y2kYLkjtuFTPV9LgE5zMiQ5ZCtEalemU4gajKqsHfTPRQvriqBrvENjZLQhxKsQ==
   dependencies:
     "@nestjs/common" "^9.3.10"
     "@nestjs/config" "^2.3.1"

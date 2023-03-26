@@ -68,6 +68,19 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: posts
+  posts:
+    image: mssocialmedia/posts
+    command: sh -c " npx prisma migrate deploy && npx prisma generate && yarn start:dev "
+    ports:
+      - 3001:3001
+    environment:
+      DATABASE_URL: postgresql://postgres:123@posts-db:5432/posts?schema=public
+      BROKER_URL: kafka:9092
+    depends_on:
+      - posts-db
+      - kafka
+      - init-kafka
+
   likes-comments-db:
     image: postgres:13
     ports:
@@ -76,3 +89,16 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: likes-comments
+
+  likes-comments:
+    image: mssocialmedia/likes-comments
+    command: sh -c " npx prisma migrate deploy && npx prisma generate && yarn start:dev "
+    ports:
+      - 3002:3002
+    environment:
+      DATABASE_URL: postgresql://postgres:123@likes-comments-db:5432/likes-comments?schema=public
+      BROKER_URL: kafka:9092
+    depends_on:
+      - likes-comments-db
+      - kafka
+      - init-kafka
