@@ -101,6 +101,5 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: my-service-image
     ports:
       - "8080:80"
