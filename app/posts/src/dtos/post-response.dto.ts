@@ -21,9 +21,7 @@ export class PostResponse {
 
   @Expose({ name: '_count' })
   @Transform(({ value }) => value.likes)
-  likesCount: {
-    likes: number;
-  };
+  likesCount: number;
 
   @Expose({ name: 'likes' })
   @Transform(({ value }) => value.length > 0)

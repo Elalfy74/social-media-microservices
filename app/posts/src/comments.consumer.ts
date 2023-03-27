@@ -28,10 +28,6 @@ export class CommentsConsumer implements OnModuleInit {
             },
           },
         });
-
-        console.log(
-          'Message received At Comment Created Consumer' + message.value.postId,
-        );
       },
     });
   }

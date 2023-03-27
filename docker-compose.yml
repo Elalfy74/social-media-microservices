@@ -104,3 +104,7 @@ services:
     ports:
       - "8070:80"
     image: mohamedbedier/msnginx:v1
+    depends_on:
+      - auth
+      - posts
+      - likes-comments
