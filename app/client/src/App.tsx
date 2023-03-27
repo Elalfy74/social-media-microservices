@@ -1,4 +1,4 @@
-import { MainLayout } from '@/Layouts';
+import { MainLayout } from '@/layouts';
 import { ThemeProvider } from './ThemeProvider';
 import { NewPost, PostList } from '@/components/Posts';
 
