@@ -101,8 +101,6 @@ services:
       - kafka
       - init-kafka
   nginx: 
-    build:
-      context: .
-      dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "8070:80"
+    image: mohamedbedier/msnginx:v1
