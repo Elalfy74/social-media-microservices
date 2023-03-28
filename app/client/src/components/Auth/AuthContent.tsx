@@ -7,9 +7,14 @@ import {
   Text,
   Container,
   Button,
+  Loader,
+  Alert,
 } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
+import { useMutation } from '@tanstack/react-query';
+import { IconAlertCircle } from '@tabler/icons-react';
+import { AxiosError } from 'axios';
 import { useAuth } from '@/store';
 import { ContentType } from './Content.type';
 import { AuthInput } from '@/types';
@@ -26,6 +31,17 @@ type AuthContentProps = {
 
 export function AuthContent({ content, handleContent }: AuthContentProps) {
   const { login, signup } = useAuth();
+  const isLoginView = content === 'login';
+
+  const { mutate, isLoading, isError, error } = useMutation({
+    mutationFn: async (authInput: AuthInput) => {
+      if (isLoginView) {
+        return login(authInput);
+      }
+      return signup(authInput);
+    },
+    onSuccess: () => handleContent(null),
+  });
 
   const form = useForm({
     validate: zodResolver(schema),
@@ -36,20 +52,16 @@ export function AuthContent({ content, handleContent }: AuthContentProps) {
     },
   });
 
-  const isLoginView = content === 'login';
-
-  async function handleAuth(authInput: AuthInput) {
-    if (isLoginView) {
-      await login(authInput);
-    } else {
-      await signup(authInput);
-    }
-
-    handleContent(null);
-  }
+  const errMessage =
+    error instanceof AxiosError ? error.response?.data.message : 'Something went wrong!';
 
   return (
     <Container size={420} py={30}>
+      {isError && (
+        <Alert icon={<IconAlertCircle size="1rem" />} color="red" mb={4}>
+          {errMessage}
+        </Alert>
+      )}
       <Title
         align="center"
         sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
@@ -72,7 +84,7 @@ export function AuthContent({ content, handleContent }: AuthContentProps) {
         mt={30}
         radius="md"
         component="form"
-        onSubmit={form.onSubmit((values) => handleAuth(values))}
+        onSubmit={form.onSubmit((values) => mutate(values))}
       >
         <TextInput
           autoComplete="username"
@@ -91,7 +103,7 @@ export function AuthContent({ content, handleContent }: AuthContentProps) {
           {...form.getInputProps('password')}
         />
         <Button fullWidth mt="xl" type="submit">
-          {isLoginView ? 'Login' : 'Signup'}
+          {isLoading ? <Loader variant="dots" color="white" /> : isLoginView ? 'Login' : 'Signup'}
         </Button>
       </Paper>
     </Container>

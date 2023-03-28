@@ -30,7 +30,7 @@
   },
   "include": [
     "src",
-    "test-utils"
+    "test-utils",
   ],
   "references": [
     {

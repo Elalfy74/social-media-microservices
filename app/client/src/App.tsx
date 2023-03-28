@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MainLayout } from '@/layouts';
 import { ThemeProvider } from './ThemeProvider';
-import { NewPost, PostList } from '@/components/Posts';
+import { Home } from './pages';
 
 const queryClient = new QueryClient();
 
@@ -10,8 +10,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <MainLayout>
-          <NewPost />
-          <PostList />
+          <Home />
         </MainLayout>
       </ThemeProvider>
     </QueryClientProvider>
