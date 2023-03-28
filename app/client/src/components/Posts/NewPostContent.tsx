@@ -3,7 +3,7 @@ import { Button, Text, Image, TextInput, Box, Loader } from '@mantine/core';
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createPost } from '@/services';
 import { CreatePostInput } from '@/types';
 
@@ -16,12 +16,27 @@ const schema = z.object({
   title: z.string().min(2, { message: 'Title Must be at least 2 characters' }),
 });
 
-export function NewPostContent() {
+export function NewPostContent({ handleClose }: { handleClose: () => void }) {
   const [files, setFile] = useState<FileWithPath[]>([]);
   const openRef = useRef<() => void>(null);
 
+  const queryClient = useQueryClient();
+
   const { mutate, isLoading, isError } = useMutation({
-    mutationFn: (createPostInput: CreatePostInput) => createPost(createPostInput),
+    mutationFn: (createPostInput: CreatePostInput) => {
+      const formData = new FormData();
+
+      formData.append('file', files[0]);
+      formData.append('title', createPostInput.title);
+
+      return createPost(formData);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['posts'],
+      });
+      handleClose();
+    },
   });
 
   const form = useForm({
@@ -36,6 +51,7 @@ export function NewPostContent() {
   return (
     <Box component="form" onSubmit={form.onSubmit((values) => mutate(values))}>
       <TextInput
+        autoFocus
         size="md"
         placeholder="Enter a title"
         label="Title"

@@ -39,7 +39,7 @@ export const NewPost = () => {
         opened={opened}
         onClose={close}
       >
-        <NewPostContent />
+        <NewPostContent handleClose={close} />
       </Modal>
       <Paper mx="auto" radius="xl" p="sm" withBorder className={classes.newPost} onClick={open}>
         Create New Post Now!

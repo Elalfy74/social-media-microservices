@@ -1,20 +1,12 @@
-import {
-  Card,
-  Image,
-  Text,
-  Group,
-  createStyles,
-  Button,
-  rem,
-  Title,
-  ActionIcon,
-} from '@mantine/core';
-import { IconHeart, IconHeartFilled, IconMessage2 } from '@tabler/icons-react';
+import { Card, Image, Text, Group, createStyles, rem, Title } from '@mantine/core';
+import { Post } from '@/types';
+import { PostItemActions } from './PostItemActions';
 
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
     maxWidth: 600,
+    width: '100%',
   },
 
   titleSection: {
@@ -41,41 +33,37 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function PostItem() {
+export function PostItem({ post }: { post: Post }) {
   const { classes } = useStyles();
 
   return (
     <Card withBorder radius="md" className={classes.card}>
       <Card.Section className={classes.titleSection}>
-        <Title order={3}>My First Image</Title>
+        <Title order={3}>{post.title}</Title>
       </Card.Section>
       <Card.Section className={classes.imageSection}>
-        <Image src="https://i.imgur.com/ZL52Q2D.png" alt="Tesla Model S" />
+        <Image
+          src={post.imageUrl}
+          alt="Tesla Model S"
+          fit="cover"
+          height={400}
+          radius="md"
+          withPlaceholder
+        />
       </Card.Section>
 
       <Group position="right" my="md" spacing={4}>
         <Text c="dimmed">By</Text>
-        <Text fw={500}>Mahmoud Elalfy</Text>
+        <Text fw={500}>{post.username}</Text>
       </Group>
 
       <Card.Section className={classes.section}>
-        <Group spacing={30} position="apart">
-          <Group>
-            <Group align="center" spacing={4}>
-              <ActionIcon variant="subtle" radius="xl" size="lg" color="red">
-                <IconHeart />
-              </ActionIcon>
-              <Text>2</Text>
-            </Group>
-            <Group align="center" spacing={4}>
-              <ActionIcon variant="subtle" radius="xl" size="lg" color="blue">
-                <IconMessage2 />
-              </ActionIcon>
-              <Text>3</Text>
-            </Group>
-          </Group>
-          <Button>Comment</Button>
-        </Group>
+        <PostItemActions
+          commentsCount={post.commentsCount}
+          likesCount={post.likesCount}
+          postId={post.id}
+          userHasLiked={post.userHasLiked}
+        />
       </Card.Section>
     </Card>
   );

@@ -22,3 +22,8 @@ export interface Post {
   likesCount: number;
   userHasLiked: boolean;
 }
+
+export interface CreateLikeInput {
+  postId: string;
+}
+export interface RemoveLikeInput extends CreateLikeInput {}

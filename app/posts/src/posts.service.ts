@@ -25,7 +25,7 @@ export class PostsService {
     session: ISession,
   ) {
     // const url = await this.s3Service.addFileToBucket(file);
-    this.logger.log('Received File', file);
+    this.logger.log('Received File', file.originalname);
     const post = await this.prisma.post.create({
       data: {
         ...createPostDto,
@@ -57,6 +57,9 @@ export class PostsService {
             likes: true,
           },
         },
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
   }
