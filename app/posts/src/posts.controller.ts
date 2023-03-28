@@ -34,8 +34,4 @@ export class AppController {
   find(@Session() session: ISession) {
     return this.postsService.find(session);
   }
-  // @Get()
-  // getHello() {
-  //   return this.postsService.getHello();
-  // }
 }

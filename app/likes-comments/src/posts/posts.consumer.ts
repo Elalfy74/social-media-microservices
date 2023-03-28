@@ -23,9 +23,6 @@ export class PostsConsumer implements OnModuleInit {
             id: message.value.postId,
           },
         });
-        console.log(
-          'Message received At CustomConsumer' + message.value.postId,
-        );
       },
     });
   }

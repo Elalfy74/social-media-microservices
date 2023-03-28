@@ -1,5 +1,6 @@
 import { createStyles, Modal, Paper, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useAuth } from '@/store';
 import { NewPostContent } from './NewPostContent';
 
 const useStyles = createStyles((theme) => ({
@@ -18,8 +19,11 @@ const useStyles = createStyles((theme) => ({
 export const NewPost = () => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
-
   const [opened, { open, close }] = useDisclosure(false);
+
+  const currentUser = useAuth((state) => state.currentUser);
+
+  if (!currentUser) return null;
 
   return (
     <>
@@ -35,7 +39,7 @@ export const NewPost = () => {
         opened={opened}
         onClose={close}
       >
-        <NewPostContent />
+        <NewPostContent handleClose={close} />
       </Modal>
       <Paper mx="auto" radius="xl" p="sm" withBorder className={classes.newPost} onClick={open}>
         Create New Post Now!

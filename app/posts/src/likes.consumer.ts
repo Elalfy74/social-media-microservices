@@ -26,10 +26,6 @@ export class LikesConsumer implements OnModuleInit {
             postId: message.value.postId,
           },
         });
-
-        console.log(
-          'Message received At Like Created Consumer' + message.value.postId,
-        );
       },
     });
     await this.removedConsumer.consume({
@@ -44,10 +40,6 @@ export class LikesConsumer implements OnModuleInit {
             },
           },
         });
-
-        console.log(
-          'Message received At Like Removed Consumer' + message.value.postId,
-        );
       },
     });
   }

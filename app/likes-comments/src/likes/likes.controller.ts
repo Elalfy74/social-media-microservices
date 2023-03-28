@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  Param,
   Post,
   Query,
   Session,
@@ -22,9 +23,9 @@ export class LikesController {
     return this.likesService.create(createLikeDto, session.userId);
   }
 
-  @Delete()
+  @Delete(':postId')
   @UseGuards(AuthGuard)
-  remove(@Query() query: RemoveLikeDto, @Session() session: ISession) {
-    return this.likesService.remove(query.postId, session.userId);
+  remove(@Param() param: RemoveLikeDto, @Session() session: ISession) {
+    return this.likesService.remove(param.postId, session.userId);
   }
 }

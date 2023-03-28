@@ -32,7 +32,11 @@ export class CommentsService {
     return comment;
   }
 
-  findAll() {
-    return `This action returns all comments`;
+  find(postId: string) {
+    return this.prisma.comment.findMany({
+      where: {
+        postId,
+      },
+    });
   }
 }
