@@ -1,5 +1,6 @@
 import { Menu, Text, Button } from '@mantine/core';
 import { IconChevronDown } from '@tabler/icons-react';
+
 import { useAuth } from '@/store';
 
 export function LogoutMenu() {

@@ -1,4 +1,5 @@
 import { Header, Group, Text, Container } from '@mantine/core';
+
 import { AuthActions, LogoutMenu } from '@/components/Auth';
 import { useAuth } from '@/store';
 

@@ -1,4 +1,5 @@
 import { Container } from '@mantine/core';
+
 import { MainHeader } from './MainHeader';
 
 export const MainLayout = ({ children }: { children: React.ReactNode }) => {

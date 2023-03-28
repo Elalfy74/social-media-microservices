@@ -1,8 +1,16 @@
 import { AuthGuard, ISession } from '@ms-social-media/common';
-import { Body, Controller, Post, Session, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Session,
+  UseGuards,
+} from '@nestjs/common';
 
 import { CommentsService } from './comments.service';
-import { CreateCommentDto } from './dtos';
+import { CreateCommentDto, FindCommentsDto } from './dtos';
 
 @Controller('/api/comments')
 export class CommentsController {
@@ -15,5 +23,10 @@ export class CommentsController {
     @Session() session: ISession,
   ) {
     return this.commentsService.create(createCommentDto, session.userId);
+  }
+
+  @Get(':postId')
+  find(@Param() param: FindCommentsDto) {
+    return this.commentsService.find(param.postId);
   }
 }

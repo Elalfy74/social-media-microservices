@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 import { MainLayout } from '@/layouts';
 import { ThemeProvider } from './ThemeProvider';
 import { Home } from './pages';

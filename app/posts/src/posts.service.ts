@@ -5,27 +5,19 @@ import {
   ProducerService,
   Topic,
 } from '@ms-social-media/common';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 import { S3Service } from './aws';
 import { CreatePostDto } from './dtos';
 
 @Injectable()
 export class PostsService {
+  private readonly logger = new Logger(PostsService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private producer: ProducerService<PPostCreatedEvent>, // private readonly s3Service: S3Service,
   ) {}
-  // constructor(
-  //   private readonly producerService: ProducerService<{
-  //     topic: Topic.Test;
-  //     message: {
-  //       value: {
-  //         name: string;
-  //       };
-  //     };
-  //   }>,
-  // ) {}
 
   async create(
     createPostDto: CreatePostDto,
@@ -33,7 +25,7 @@ export class PostsService {
     session: ISession,
   ) {
     // const url = await this.s3Service.addFileToBucket(file);
-
+    this.logger.log('Received File', file);
     const post = await this.prisma.post.create({
       data: {
         ...createPostDto,

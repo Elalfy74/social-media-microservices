@@ -31,4 +31,12 @@ export class CommentsService {
 
     return comment;
   }
+
+  find(postId: string) {
+    return this.prisma.comment.findMany({
+      where: {
+        postId,
+      },
+    });
+  }
 }

@@ -1,16 +1,20 @@
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cookieSession = require('cookie-session');
+import { ConfigService } from '@nestjs/config';
 
 import { AuthModule } from './auth.module';
 
+const logger = new Logger('bootstrap');
+
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
+  const configService = app.get(ConfigService);
 
   app.use(
     cookieSession({
-      keys: ['random_string'],
+      keys: [configService.get('SESSION_KEY')],
     }),
   );
 
@@ -20,11 +24,17 @@ async function bootstrap() {
     }),
   );
 
+  const frontEndUrl: string = configService.get('FRONTEND_URL');
+
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: [...frontEndUrl.split(' ')],
     credentials: true,
   });
 
-  await app.listen(3000);
+  const port = configService.get('PORT') || 3000;
+
+  await app.listen(port);
+
+  logger.log(`Auth Service is Running on Port ${port}!`);
 }
 bootstrap();
