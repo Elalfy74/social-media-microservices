@@ -4,8 +4,9 @@ import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createPost } from '@/services';
-import { CreatePostInput } from '@/types';
+
+import { createPost } from '@/services/posts';
+import { type CreatePostInput } from '@/types/posts';
 
 const preview = (file: FileWithPath) => {
   const imageUrl = URL.createObjectURL(file);

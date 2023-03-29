@@ -17,8 +17,8 @@ import { IconAlertCircle } from '@tabler/icons-react';
 import { AxiosError } from 'axios';
 
 import { useAuth } from '@/store';
-import { ContentType } from './Content.type';
-import { AuthInput } from '@/types';
+import { type ContentType } from './Content.type';
+import { type AuthInput } from '@/types/auth';
 
 const schema = z.object({
   username: z.string().min(4, { message: 'Username should have at least 4 letters' }),

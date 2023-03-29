@@ -1,5 +1,5 @@
 import { Card, Image, Text, Group, createStyles, rem, Title } from '@mantine/core';
-import { Post } from '@/types';
+import { type Post } from '@/types/posts';
 import { PostItemActions } from './PostItemActions';
 
 const useStyles = createStyles((theme) => ({
