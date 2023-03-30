@@ -10,7 +10,7 @@ import { ConfigService } from '@nestjs/config';
 export class S3Service {
   constructor(private readonly config: ConfigService) {}
 
-  private REGION = 'eu-central-1';
+  private REGION = this.config.get('REGION');
 
   private _s3Client = new S3Client({
     region: this.REGION,
@@ -24,7 +24,7 @@ export class S3Service {
     const fileName = new Date().toISOString() + '-' + file.originalname;
 
     const params: PutObjectCommandInput = {
-      Bucket: 'posts-imgs',
+      Bucket: this.config.get('BUCKET_NAME'),
       Key: fileName,
       Body: file.buffer,
       ContentType: file.mimetype,

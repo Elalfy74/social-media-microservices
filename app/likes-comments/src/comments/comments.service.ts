@@ -37,6 +37,9 @@ export class CommentsService {
       where: {
         postId,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 }
