@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { AuthInput, CurrentUser } from '@/types';
-import * as authService from '@/services';
+import { AuthInput, CurrentUser } from '@/types/auth';
+import * as authService from '@/services/auth';
 
 interface AuthState {
   currentUser: CurrentUser | null;

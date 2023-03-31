@@ -6,7 +6,6 @@ services:
       - '2181:2181'
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
-
   kafka:
     image: 'bitnami/kafka:3'
     ports:
@@ -40,6 +39,7 @@ services:
       echo -e 'Created kafka topics:'
       kafka-topics.sh --bootstrap-server kafka:9092 --list
       '
+
   auth-db:
     image: postgres:13
     ports:
@@ -50,7 +50,7 @@ services:
       POSTGRES_DB: auth
   auth:
     image: mssocialmedia/auth
-    command: sh -c " npx prisma migrate deploy && npx prisma generate && yarn start:dev "
+    command: sh -c "apt-get update && apt-get install -y procps && npx prisma migrate deploy && npx prisma generate && yarn start:dev"
     ports:
       - 3000:3000
     environment:
@@ -58,6 +58,9 @@ services:
       FRONTEND_URL: http://localhost:5173
       PORT: 3000
       SESSION_KEY: RANDOM_KKKKEY
+    volumes:
+      - ./app/auth/:/app
+
     depends_on:
       - auth-db
 
@@ -71,7 +74,7 @@ services:
       POSTGRES_DB: posts
   posts:
     image: mssocialmedia/posts
-    command: sh -c " npx prisma migrate deploy && npx prisma generate && yarn start:dev "
+    command: sh -c "apt-get update && apt-get install -y procps && npx prisma migrate deploy && npx prisma generate && yarn start:dev "
     ports:
       - 3001:3001
     environment:
@@ -83,7 +86,10 @@ services:
       REGION: eu-central-1
       ACCESS_KEY_ID: AKIAY4XTOBDMF5EPQ2JO
       SECRET_ACCESS_KEY: 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
-      BUCKET_NAME: testingthesaga
+      BUCKET_NAME: testthesaga6
+    
+    volumes:
+      - ./app/posts/:/app
 
     depends_on:
       - posts-db
@@ -98,10 +104,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: likes-comments
-
   likes-comments:
     image: mssocialmedia/likes-comments
-    command: sh -c " npx prisma migrate deploy && npx prisma generate && yarn start:dev "
+    command: sh -c "apt-get update && apt-get install -y procps && npx prisma migrate deploy && npx prisma generate && yarn start:dev "
     ports:
       - 3002:3002
     environment:
@@ -110,10 +115,15 @@ services:
       FRONTEND_URL: http://localhost:5173
       PORT: 3002
       SESSION_KEY: RANDOM_KKKKEY
+
+    volumes:
+      - ./app/likes-comments/:/app
+
     depends_on:
       - likes-comments-db
       - kafka
       - init-kafka
+
   nginx: 
     ports:
       - "8070:80"
@@ -123,12 +133,14 @@ services:
       - posts
       - likes-comments
 
-  # client:
-  #   image: mssocialmedia/client
-  #   command: sh -c "yarn dev --host"
-  #   ports:
-  #     - 5173:5173
-  #   environment:
-  #     VITE_BACKEND_URL: http://localhost:8070/api/
-  #   depends_on:
-  #     - nginx
+  client:
+    image: mssocialmedia/client
+    command: sh -c "yarn dev --host"
+    ports:
+      - 5173:5173
+    environment:
+      VITE_BACKEND_URL: http://localhost:8070/api/
+    volumes:
+      - ./app/client/:/app
+    depends_on:
+      - nginx

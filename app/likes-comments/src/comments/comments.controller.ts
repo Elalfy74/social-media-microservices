@@ -22,7 +22,7 @@ export class CommentsController {
     @Body() createCommentDto: CreateCommentDto,
     @Session() session: ISession,
   ) {
-    return this.commentsService.create(createCommentDto, session.userId);
+    return this.commentsService.create(createCommentDto, session.username);
   }
 
   @Get(':postId')

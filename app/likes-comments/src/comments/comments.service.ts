@@ -15,11 +15,11 @@ export class CommentsService {
     private readonly producer: ProducerService<PCommentCreatedEvent>,
   ) {}
 
-  async create(createCommentDto: CreateCommentDto, userId: string) {
+  async create(createCommentDto: CreateCommentDto, username: string) {
     const comment = await this.prisma.comment.create({
       data: {
         ...createCommentDto,
-        userId,
+        username,
       },
     });
 
@@ -36,6 +36,9 @@ export class CommentsService {
     return this.prisma.comment.findMany({
       where: {
         postId,
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
   }

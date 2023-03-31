@@ -5,18 +5,17 @@ import {
   ProducerService,
   Topic,
 } from '@ms-social-media/common';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { S3Service } from './aws';
 import { CreatePostDto } from './dtos';
 
 @Injectable()
 export class PostsService {
-  private readonly logger = new Logger(PostsService.name);
-
   constructor(
-    private readonly prisma: PrismaService,
-    private producer: ProducerService<PPostCreatedEvent>, // private readonly s3Service: S3Service,
+    private prisma: PrismaService,
+    private producer: ProducerService<PPostCreatedEvent>,
+    private s3Service: S3Service,
   ) {}
 
   async create(
@@ -24,14 +23,17 @@ export class PostsService {
     file: Express.Multer.File,
     session: ISession,
   ) {
-    // const url = await this.s3Service.addFileToBucket(file);
-    this.logger.log('Received File', file.originalname);
+    console.log(file?.originalname);
+
+    const url = await this.s3Service.addFileToBucket(file);
+
+    console.log(url);
+
     const post = await this.prisma.post.create({
       data: {
         ...createPostDto,
         ...session,
-        imageUrl:
-          'https://images.unsplash.com/photo-1679072644862-f0db0d92f4f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80',
+        imageUrl: url,
       },
     });
 

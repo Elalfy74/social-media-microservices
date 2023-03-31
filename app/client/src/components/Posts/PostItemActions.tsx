@@ -1,55 +1,79 @@
-import { Group, ActionIcon, Button, Text } from '@mantine/core';
+import { Group, ActionIcon, Button, Text, useMantineTheme, Modal } from '@mantine/core';
 import { IconHeart, IconHeartFilled, IconMessage2 } from '@tabler/icons-react';
-import { useQueryClient } from '@tanstack/react-query';
-import { createLike, removeLike } from '@/services/likes';
+
+import { useDisclosure } from '@mantine/hooks';
 import { useAuth } from '@/store';
+import { useLike } from './useLike.hook';
+import { type Post } from '@/types/posts';
+// eslint-disable-next-line import/no-cycle
+import { FullPostContent } from './FullPostContent';
 
-type PostItemActionsProps = {
-  postId: string;
-  likesCount: number;
-  commentsCount: number;
-  userHasLiked: boolean;
-};
+export const PostItemActions = ({ post }: { post: Post }) => {
+  const theme = useMantineTheme();
+  const [opened, { open, close }] = useDisclosure(false);
 
-export const PostItemActions = (props: PostItemActionsProps) => {
-  const queryClient = useQueryClient();
   const currentUser = useAuth((state) => state.currentUser);
 
-  async function handleLike() {
-    if (props.userHasLiked) {
-      await removeLike({ postId: props.postId });
-    } else {
-      await createLike({ postId: props.postId });
-    }
-    queryClient.invalidateQueries({
-      queryKey: ['posts'],
-    });
-  }
+  const handleLike = useLike({ postId: post.id, userHasLiked: post.userHasLiked });
 
   return (
-    <Group spacing={30} position="apart">
-      <Group>
-        <Group align="center" spacing={4}>
-          <ActionIcon
-            variant="subtle"
-            radius="xl"
-            size="lg"
-            color="red"
-            onClick={handleLike}
-            disabled={!currentUser}
-          >
-            {props.userHasLiked ? <IconHeartFilled /> : <IconHeart />}
-          </ActionIcon>
-          <Text>{props.likesCount}</Text>
+    <>
+      <Modal
+        zIndex={3000}
+        size="lg"
+        centered
+        radius="md"
+        title={`${post.username}'s Post`}
+        styles={{
+          title: {
+            fontSize: '2rem',
+            fontWeight: 'bold',
+            textTransform: 'capitalize',
+          },
+        }}
+        withinPortal
+        overlayProps={{
+          color: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2],
+          opacity: 0.55,
+          blur: 3,
+        }}
+        opened={opened}
+        onClose={close}
+      >
+        <FullPostContent post={post} />
+      </Modal>
+
+      <Group spacing={30} position="apart">
+        <Group>
+          <Group align="center" spacing={4}>
+            <ActionIcon
+              variant="subtle"
+              radius="xl"
+              size="lg"
+              color="red"
+              onClick={handleLike}
+              disabled={!currentUser}
+            >
+              {post.userHasLiked ? <IconHeartFilled /> : <IconHeart />}
+            </ActionIcon>
+            <Text>{post.likesCount}</Text>
+          </Group>
+          <Group align="center" spacing={4}>
+            <ActionIcon
+              variant="subtle"
+              radius="xl"
+              size="lg"
+              color="blue"
+              onClick={open}
+              disabled={!currentUser}
+            >
+              <IconMessage2 />
+            </ActionIcon>
+            <Text>{post.commentsCount}</Text>
+          </Group>
         </Group>
-        <Group align="center" spacing={4}>
-          <ActionIcon variant="subtle" radius="xl" size="lg" color="blue" disabled={!currentUser}>
-            <IconMessage2 />
-          </ActionIcon>
-          <Text>{props.commentsCount}</Text>
-        </Group>
+        <Button>Comment</Button>
       </Group>
-      <Button>Comment</Button>
-    </Group>
+    </>
   );
 };
