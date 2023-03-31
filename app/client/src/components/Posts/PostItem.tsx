@@ -1,5 +1,6 @@
 import { Card, Image, Text, Group, createStyles, rem, Title } from '@mantine/core';
 import { type Post } from '@/types/posts';
+// eslint-disable-next-line import/no-cycle
 import { PostItemActions } from './PostItemActions';
 
 const useStyles = createStyles((theme) => ({
@@ -58,12 +59,7 @@ export function PostItem({ post }: { post: Post }) {
       </Group>
 
       <Card.Section className={classes.section}>
-        <PostItemActions
-          commentsCount={post.commentsCount}
-          likesCount={post.likesCount}
-          postId={post.id}
-          userHasLiked={post.userHasLiked}
-        />
+        <PostItemActions post={post} />
       </Card.Section>
     </Card>
   );

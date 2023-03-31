@@ -17,6 +17,6 @@ import { PostsService } from './posts.service';
     KafkaModule,
   ],
   controllers: [AppController],
-  providers: [PostsService, LikesConsumer, CommentsConsumer],
+  providers: [PostsService, LikesConsumer, CommentsConsumer, S3Service],
 })
 export class PostsModule {}

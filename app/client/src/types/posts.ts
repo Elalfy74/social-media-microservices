@@ -1,5 +1,8 @@
+import { FileWithPath } from '@mantine/dropzone';
+
 export interface CreatePostInput {
   title: string;
+  file: FileWithPath;
 }
 
 export interface Post {

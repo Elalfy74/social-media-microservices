@@ -28,7 +28,8 @@ export class S3Service {
       Key: fileName,
       Body: file.buffer,
       ContentType: file.mimetype,
-      ACL: 'public-read',
+
+      // ACL: 'public-read',
     };
 
     await this._s3Client.send(new PutObjectCommand(params));

@@ -9,7 +9,13 @@ export const PostList = () => {
     queryFn: getAllPost,
   });
 
-  if (isError) return <Title>Something Went Wrong</Title>;
+  if (isError) {
+    return (
+      <Center>
+        <Title>Something Went Wrong</Title>
+      </Center>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -19,7 +25,13 @@ export const PostList = () => {
     );
   }
 
-  if (data.length === 0) return <Title>No posts yet!</Title>;
+  if (data.length === 0) {
+    return (
+      <Center>
+        <Title>No posts yet!</Title>{' '}
+      </Center>
+    );
+  }
 
   return (
     <Stack spacing="lg" align="center">

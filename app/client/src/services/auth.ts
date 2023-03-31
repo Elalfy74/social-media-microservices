@@ -14,3 +14,7 @@ export const login = async (loginInput: AuthInput) => {
 export const signout = async () => {
   await axios.post('/auth/signout');
 };
+
+export const checkAuth = async () => {
+  return axios.get('/auth/checkauth');
+};

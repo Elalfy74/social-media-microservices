@@ -9,5 +9,6 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off',
     'arrow-body-style': 'off',
     'import/extensions': 'off',
+    'consistent-return': 'off',
   },
 };
