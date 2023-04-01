@@ -47,14 +47,4 @@ export class AuthService {
 
     return user;
   }
-
-  async whoami(id: string) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id,
-      },
-    });
-
-    return user.username;
-  }
 }

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Center, Title, Loader } from '@mantine/core';
-import { getCommentsByPost } from '@/services/comments';
+import { getCommentsByPost } from '@/services/comments.service';
 
 export const useCommentList = (postId: string) => {
   const { data, isLoading, isError } = useQuery({

@@ -1,5 +1,5 @@
 import { Card, Image, Text, Group, createStyles, rem, Title } from '@mantine/core';
-import { type Post } from '@/types/posts';
+import { type Post } from '@/types/posts.types';
 // eslint-disable-next-line import/no-cycle
 import { PostItemActions } from './PostItemActions';
 
@@ -34,7 +34,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function PostItem({ post }: { post: Post }) {
+export function PostItem({ post, disableCommentBtn }: { post: Post; disableCommentBtn?: boolean }) {
   const { classes } = useStyles();
 
   return (
@@ -59,7 +59,7 @@ export function PostItem({ post }: { post: Post }) {
       </Group>
 
       <Card.Section className={classes.section}>
-        <PostItemActions post={post} />
+        <PostItemActions post={post} disableCommentBtn={disableCommentBtn} />
       </Card.Section>
     </Card>
   );

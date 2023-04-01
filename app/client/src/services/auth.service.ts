@@ -1,5 +1,5 @@
 import { axios } from '@/lib';
-import { type AuthInput, type CurrentUser } from '@/types/auth';
+import { type AuthInput, type CurrentUser } from '@/types/auth.types';
 
 export const signup = async (signupInput: AuthInput) => {
   const res = await axios.post<CurrentUser>('/auth/signup', signupInput);

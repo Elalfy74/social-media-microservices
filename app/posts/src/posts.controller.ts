@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { CreatePostDto, PostResponse } from './dtos';
+import { CreatePostDto, PostDto } from './dtos';
 import { PostsService } from './posts.service';
 
 @Controller('/api/posts')
@@ -30,7 +30,7 @@ export class AppController {
   }
 
   @Get()
-  @Serialize(PostResponse)
+  @Serialize(PostDto)
   find(@Session() session: ISession) {
     return this.postsService.find(session);
   }

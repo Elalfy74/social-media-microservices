@@ -1,5 +1,5 @@
 import { axios } from '@/lib';
-import { CreateCommentInput, GetCommentsInput, Comment } from '@/types/comments';
+import { CreateCommentInput, GetCommentsInput, Comment } from '@/types/comments.types';
 
 export const createComment = async (createCommentInput: CreateCommentInput) => {
   const comment = await axios.post<Comment>('/comments', createCommentInput);

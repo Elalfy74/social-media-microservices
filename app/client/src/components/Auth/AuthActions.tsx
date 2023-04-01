@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Modal, Button, Group, useMantineTheme } from '@mantine/core';
 
 import { AuthContent } from './AuthContent';
-import { type ContentType } from './Content.type';
+import { type ContentType } from './AuthModal.types';
 
 export function AuthActions() {
   const [content, setContent] = useState<ContentType>(null);

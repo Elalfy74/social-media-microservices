@@ -1,5 +1,5 @@
 import { axios } from '@/lib';
-import { type CreateLikeInput, type RemoveLikeInput } from '@/types/likes';
+import { type CreateLikeInput, type RemoveLikeInput } from '@/types/likes.types';
 
 export const createLike = (createLikeInput: CreateLikeInput) => {
   return axios.post('/likes', createLikeInput);

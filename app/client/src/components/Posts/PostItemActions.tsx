@@ -4,11 +4,17 @@ import { IconHeart, IconHeartFilled, IconMessage2 } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { useAuth } from '@/store';
 import { useLike } from './useLike.hook';
-import { type Post } from '@/types/posts';
+import { type Post } from '@/types/posts.types';
 // eslint-disable-next-line import/no-cycle
 import { FullPostContent } from './FullPostContent';
 
-export const PostItemActions = ({ post }: { post: Post }) => {
+export const PostItemActions = ({
+  post,
+  disableCommentBtn,
+}: {
+  post: Post;
+  disableCommentBtn?: boolean;
+}) => {
   const theme = useMantineTheme();
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -65,7 +71,7 @@ export const PostItemActions = ({ post }: { post: Post }) => {
               size="lg"
               color="blue"
               onClick={open}
-              disabled={!currentUser}
+              disabled={!currentUser || disableCommentBtn}
             >
               <IconMessage2 />
             </ActionIcon>

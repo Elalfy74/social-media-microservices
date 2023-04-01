@@ -23,11 +23,7 @@ export class PostsService {
     file: Express.Multer.File,
     session: ISession,
   ) {
-    console.log(file?.originalname);
-
     const url = await this.s3Service.addFileToBucket(file);
-
-    console.log(url);
 
     const post = await this.prisma.post.create({
       data: {

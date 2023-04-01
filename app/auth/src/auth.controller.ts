@@ -45,10 +45,9 @@ export class AuthController {
     session.username = null;
   }
 
-  @Get('whoami')
+  @Get('checkauth')
   @UseGuards(AuthGuard)
   getMe(@Session() session: ISession) {
-    // return this.authService.whoami(session.userId);
     return session;
   }
 }

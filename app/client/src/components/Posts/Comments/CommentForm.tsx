@@ -1,14 +1,21 @@
 import { ActionIcon, Box, TextInput } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { useForm, zodResolver } from '@mantine/form';
 import { IconSend } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
-import { createComment } from '@/services/comments';
-import { Post } from '@/types/posts';
-import { Comment } from '@/types/comments';
+import { z } from 'zod';
+import { createComment } from '@/services/comments.service';
+import { Post } from '@/types/posts.types';
+import { Comment } from '@/types/comments.types';
+
+const schema = z.object({
+  body: z.string().min(2),
+});
 
 export const CommentForm = ({ postId }: { postId: string }) => {
   const queryClient = useQueryClient();
+
   const form = useForm({
+    validate: zodResolver(schema),
     initialValues: {
       body: '',
     },
@@ -19,7 +26,7 @@ export const CommentForm = ({ postId }: { postId: string }) => {
     form.reset();
 
     queryClient.setQueryData(['posts'], (data?: Post[]) => {
-      if (!data) return undefined;
+      if (!data) return;
 
       const targetPostIndex = data.findIndex((post) => post.id === postId);
 
@@ -37,7 +44,7 @@ export const CommentForm = ({ postId }: { postId: string }) => {
     });
 
     queryClient.setQueryData([`comments/${postId}`], (data?: Comment[]) => {
-      if (!data) return undefined;
+      if (!data) return;
 
       const newData = [comment, ...data];
 
@@ -52,7 +59,7 @@ export const CommentForm = ({ postId }: { postId: string }) => {
         data-autofocus
         {...form.getInputProps('body')}
         rightSection={
-          <ActionIcon type="submit">
+          <ActionIcon type="submit" disabled={!form.isValid()}>
             <IconSend />
           </ActionIcon>
         }

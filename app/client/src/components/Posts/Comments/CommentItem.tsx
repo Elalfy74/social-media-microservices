@@ -1,5 +1,5 @@
 import { Paper, Group, Text } from '@mantine/core';
-import { type Comment } from '@/types/comments';
+import { type Comment } from '@/types/comments.types';
 
 export const CommentItem = ({ comment }: { comment: Comment }) => {
   return (

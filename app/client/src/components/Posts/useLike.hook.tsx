@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { removeLike, createLike } from '@/services/likes';
-import { type Post } from '@/types/posts';
+import { removeLike, createLike } from '@/services/likes.service';
+import { type Post } from '@/types/posts.types';
 
 type UseLikeProps = {
   userHasLiked: boolean;

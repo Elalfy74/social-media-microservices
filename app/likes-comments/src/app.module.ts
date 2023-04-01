@@ -16,7 +16,6 @@ import { PostsConsumer } from '@/posts/posts.consumer';
     LikesModule,
     CommentsModule,
   ],
-  controllers: [],
   providers: [PostsConsumer],
 })
 export class AppModule {}
