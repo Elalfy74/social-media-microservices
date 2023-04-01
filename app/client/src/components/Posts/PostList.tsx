@@ -1,6 +1,6 @@
 import { Center, Loader, Stack, Title } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
-import { getAllPost } from '@/services/posts';
+import { getAllPost } from '@/services/posts.service';
 import { PostItem } from './PostItem';
 
 export const PostList = () => {

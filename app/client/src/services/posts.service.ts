@@ -1,5 +1,5 @@
 import { axios } from '@/lib';
-import { type CreatePostInput, type Post } from '@/types/posts';
+import { type CreatePostInput, type Post } from '@/types/posts.types';
 
 export const createPost = async (createPostInput: FormData) => {
   const post = await axios.post('/posts', createPostInput);

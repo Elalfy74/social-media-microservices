@@ -5,8 +5,8 @@ import { zfd } from 'zod-form-data';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { z } from 'zod';
-import { createPost } from '@/services/posts';
-import { type CreatePostInput } from '@/types/posts';
+import { createPost } from '@/services/posts.service';
+import { type CreatePostInput } from '@/types/posts.types';
 
 const preview = (file: FileWithPath) => {
   const imageUrl = URL.createObjectURL(file);
