@@ -123,12 +123,12 @@ services:
       - posts
       - likes-comments
 
-  # client:
-  #   image: mssocialmedia/client
-  #   command: sh -c "yarn dev --host"
-  #   ports:
-  #     - 5173:5173
-  #   environment:
-  #     VITE_BACKEND_URL: http://localhost:8070/api/
-  #   depends_on:
-  #     - nginx
+  client:
+      image: mohamedbedier/nginxfornt:v1
+      #command: sh -c "yarn dev --host"
+      ports:
+        - 5173:80
+      environment:
+        VITE_BACKEND_URL: http://localhost:8070/api/
+      depends_on:
+        - nginx
