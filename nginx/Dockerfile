@@ -3,11 +3,11 @@ FROM node:slim as build-stage
 
 WORKDIR /app
 
-COPY ./client/package*.json /app/
+COPY ../client/package*.json /app/
 
 RUN yarn  install
 
-COPY ./client/ /app/
+COPY ../client/ /app/
 COPY nginx.conf /app/
 #RUN npm run test -- --browsers ChromeHeadlessNoSandbox --watch=false
 
