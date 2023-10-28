@@ -15,7 +15,7 @@ export class CommentsController {
   @Post()
   @UseGuards(JwtGuard)
   async create(@Body() dto: CreateCommentDto, @GetUser() user: CurrentUser) {
-    const comment = await this.commentsService.create(dto, user.id);
+    const comment = await this.commentsService.create(dto, user.username);
 
     this.commentsProducer.producerCreatedEvent(comment);
 

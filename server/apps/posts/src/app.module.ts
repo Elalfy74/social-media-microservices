@@ -1,4 +1,10 @@
-import { KafkaModule, PostsPrismaService, PrismaModule, validationSchema } from '@app/common';
+import {
+  DocsController,
+  KafkaModule,
+  PostsPrismaService,
+  PrismaModule,
+  validationSchema,
+} from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -23,5 +29,6 @@ import { PostsModule } from './posts/posts.module';
     LikesModule,
     CommentsModule,
   ],
+  controllers: [DocsController],
 })
 export class AppModule {}

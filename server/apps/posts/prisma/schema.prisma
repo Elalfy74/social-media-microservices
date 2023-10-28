@@ -15,7 +15,7 @@ model Post {
   id       String @id @default(uuid())
   title    String
   imageUrl String
-  userId   String
+  username String
 
   createdAt     DateTime @default(now())
   commentsCount Int      @default(0)

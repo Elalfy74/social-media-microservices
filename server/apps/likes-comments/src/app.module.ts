@@ -1,4 +1,5 @@
 import {
+  DocsController,
   KafkaModule,
   LikesCommentsPrismaService,
   PrismaModule,
@@ -28,5 +29,6 @@ import { PostsModule } from './posts/posts.module';
     LikesModule,
     CommentsModule,
   ],
+  controllers: [DocsController],
 })
 export class AppModule {}

@@ -30,8 +30,8 @@ model Like {
 model Comment {
   id String @id @default(uuid())
 
-  userId String
-  postId String
+  username String
+  postId   String
 
   Post Post @relation(fields: [postId], references: [id])
 

@@ -7,11 +7,11 @@ import { CreateCommentDto, FindCommentsDto } from './dtos';
 export class CommentsService {
   constructor(private readonly prisma: LikesCommentsPrismaService) {}
 
-  async create(dto: CreateCommentDto, userId: string) {
+  async create(dto: CreateCommentDto, username: string) {
     return this.prisma.comment.create({
       data: {
         ...dto,
-        userId,
+        username,
       },
     });
   }

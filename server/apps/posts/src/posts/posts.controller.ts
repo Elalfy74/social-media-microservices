@@ -15,7 +15,7 @@ export class PostsController {
   @Post()
   @UseGuards(JwtGuard)
   async create(@Body() dto: CreatePostDto, @GetUser() user: CurrentUser) {
-    const post = await this.postsService.create(dto, user.id);
+    const post = await this.postsService.create(dto, user.username);
 
     this.postsProducer.productCreatedEvent(post);
 

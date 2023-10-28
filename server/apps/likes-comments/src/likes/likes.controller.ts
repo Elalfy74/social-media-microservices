@@ -23,7 +23,12 @@ export class LikesController {
   }
 
   @Delete(':postId')
-  remove(@Param() dto: RemoveLikeDto, @GetUser() user: CurrentUser) {
-    return this.likesService.remove(dto, user.id);
+  @UseGuards(JwtGuard)
+  async remove(@Param() dto: RemoveLikeDto, @GetUser() user: CurrentUser) {
+    const like = await this.likesService.remove(dto, user.id);
+
+    this.likesProducer.produceRemovedEvent(like);
+
+    return like;
   }
 }
