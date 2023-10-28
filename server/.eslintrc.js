@@ -6,10 +6,7 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint/eslint-plugin', 'simple-import-sort'],
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-  ],
+  extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
   root: true,
   env: {
     node: true,
@@ -24,5 +21,6 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'off',
     'simple-import-sort/imports': 'warn',
     'simple-import-sort/exports': 'warn',
+    '@typescript-eslint/no-unused-vars': 'off',
   },
 };

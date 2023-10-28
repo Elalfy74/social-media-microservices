@@ -1,21 +1,32 @@
-import { KafkaModule, PrismaModule } from '@ms-social-media/common';
+import {
+  KafkaModule,
+  LikesCommentsPrismaService,
+  PrismaModule,
+  validationSchema,
+} from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
-import { CommentsModule } from '@/comments/comments.module';
-import { LikesModule } from '@/likes/likes.module';
-import { PostsConsumer } from '@/posts/posts.consumer';
+import { CommentsModule } from './comments/comments.module';
+import { LikesModule } from './likes/likes.module';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      validationSchema,
+      envFilePath: './apps/likes-comments/.env',
     }),
+    JwtModule.register({
+      global: true,
+    }),
+    PrismaModule.forRoot(LikesCommentsPrismaService),
     KafkaModule,
-    PrismaModule,
+    PostsModule,
     LikesModule,
     CommentsModule,
   ],
-  providers: [PostsConsumer],
 })
 export class AppModule {}

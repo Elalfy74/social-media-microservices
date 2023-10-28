@@ -1,4 +1,5 @@
 import { KafkaMessage } from 'kafkajs';
+
 import { ConsumerEvent, ProducerEvent, Topic } from './base';
 
 export interface PCommentCreatedEvent extends ProducerEvent {

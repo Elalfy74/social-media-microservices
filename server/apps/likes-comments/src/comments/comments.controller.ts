@@ -1,32 +1,29 @@
-import { AuthGuard, ISession } from '@ms-social-media/common';
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Session,
-  UseGuards,
-} from '@nestjs/common';
+import { CurrentUser, GetUser, JwtGuard } from '@app/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 
+import { CommentsProducer } from './comments.producer';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto, FindCommentsDto } from './dtos';
 
-@Controller('/api/comments')
+@Controller('comments')
 export class CommentsController {
-  constructor(private readonly commentsService: CommentsService) {}
+  constructor(
+    private readonly commentsService: CommentsService,
+    private readonly commentsProducer: CommentsProducer,
+  ) {}
 
   @Post()
-  @UseGuards(AuthGuard)
-  create(
-    @Body() createCommentDto: CreateCommentDto,
-    @Session() session: ISession,
-  ) {
-    return this.commentsService.create(createCommentDto, session.username);
+  @UseGuards(JwtGuard)
+  async create(@Body() dto: CreateCommentDto, @GetUser() user: CurrentUser) {
+    const comment = await this.commentsService.create(dto, user.id);
+
+    this.commentsProducer.producerCreatedEvent(comment);
+
+    return comment;
   }
 
   @Get(':postId')
-  find(@Param() param: FindCommentsDto) {
-    return this.commentsService.find(param.postId);
+  async find(@Param() param: FindCommentsDto) {
+    return this.commentsService.find(param);
   }
 }

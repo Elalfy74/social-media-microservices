@@ -1,54 +1,28 @@
-import {
-  PLikeCreatedEvent,
-  PLikeRemovedEvent,
-  PrismaService,
-  ProducerService,
-  Topic,
-} from '@ms-social-media/common';
+import { LikesCommentsPrismaService } from '@app/common';
 import { Injectable } from '@nestjs/common';
 
-import { CreateLikeDto } from './dtos';
+import { CreateLikeDto, RemoveLikeDto } from './dtos';
 
 @Injectable()
 export class LikesService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly createdProducer: ProducerService<PLikeCreatedEvent>,
-    private readonly removedProducer: ProducerService<PLikeRemovedEvent>,
-  ) {}
+  constructor(private readonly prisma: LikesCommentsPrismaService) {}
 
-  async create(createLikeDto: CreateLikeDto, userId: string) {
-    const like = await this.prisma.like.create({
+  async create(dto: CreateLikeDto, userId: string) {
+    return this.prisma.like.create({
       data: {
-        ...createLikeDto,
+        ...dto,
         userId,
       },
     });
-
-    this.createdProducer.produce(Topic.LikeCreated, {
-      value: {
-        postId: like.postId,
-        userId: like.userId,
-      },
-    });
-
-    return like;
   }
 
-  async remove(postId: string, userId: string) {
-    const like = await this.prisma.like.delete({
+  async remove(dto: RemoveLikeDto, userId: string) {
+    return this.prisma.like.delete({
       where: {
         userId_postId: {
-          postId,
+          ...dto,
           userId,
         },
-      },
-    });
-
-    this.removedProducer.produce(Topic.LikeRemoved, {
-      value: {
-        postId: like.postId,
-        userId: like.userId,
       },
     });
   }

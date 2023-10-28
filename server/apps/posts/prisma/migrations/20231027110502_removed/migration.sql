@@ -4,7 +4,6 @@ CREATE TABLE "Post" (
     "title" TEXT NOT NULL,
     "imageUrl" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "username" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "commentsCount" INTEGER NOT NULL DEFAULT 0,
 

@@ -8,9 +8,7 @@ import {
 import { plainToInstance } from 'class-transformer';
 import { map } from 'rxjs/operators';
 
-interface ClassConstructor {
-  new (...args: any[]): {};
-}
+import type { ClassConstructor } from '../interfaces';
 
 export function Serialize(dto: ClassConstructor) {
   return UseInterceptors(new SerializeInterceptor(dto));
@@ -26,7 +24,7 @@ class SerializeInterceptor implements NestInterceptor {
         return plainToInstance(this.dto, data, {
           excludeExtraneousValues: true,
         });
-      })
+      }),
     );
   }
 }

@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { Kafka, Message, Producer } from 'kafkajs';
+import { Kafka, type Message, Producer } from 'kafkajs';
 
 import { IProducer } from './interfaces';
 
@@ -8,12 +8,15 @@ export class KafkajsProducer implements IProducer {
   private readonly producer: Producer;
   private readonly logger: Logger;
 
-  constructor(private readonly topic: string, brokerUrl: string) {
+  constructor(
+    private readonly topic: string,
+    brokerUrl: string,
+  ) {
     this.kafka = new Kafka({
       brokers: [brokerUrl],
     });
     this.producer = this.kafka.producer();
-    this.logger = new Logger(topic);
+    this.logger = new Logger(`producer-${topic}`);
   }
 
   async produce(message: Message) {

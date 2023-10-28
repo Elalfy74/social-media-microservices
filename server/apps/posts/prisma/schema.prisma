@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../../../node_modules/@prisma-posts/client"
 }
 
 datasource db {
@@ -15,7 +16,6 @@ model Post {
   title    String
   imageUrl String
   userId   String
-  username String
 
   createdAt     DateTime @default(now())
   commentsCount Int      @default(0)

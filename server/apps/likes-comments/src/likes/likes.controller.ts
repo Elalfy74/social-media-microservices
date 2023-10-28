@@ -1,30 +1,29 @@
-import { AuthGuard, ISession } from '@ms-social-media/common';
-import {
-  Body,
-  Controller,
-  Delete,
-  Param,
-  Post,
-  Session,
-  UseGuards,
-} from '@nestjs/common';
+import { CurrentUser, GetUser, JwtGuard } from '@app/common';
+import { Body, Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
 
 import { CreateLikeDto, RemoveLikeDto } from './dtos';
+import { LikesProducer } from './likes.producer';
 import { LikesService } from './likes.service';
 
-@Controller('/api/likes')
+@Controller('likes')
 export class LikesController {
-  constructor(private readonly likesService: LikesService) {}
+  constructor(
+    private readonly likesService: LikesService,
+    private readonly likesProducer: LikesProducer,
+  ) {}
 
   @Post()
-  @UseGuards(AuthGuard)
-  create(@Body() createLikeDto: CreateLikeDto, @Session() session: ISession) {
-    return this.likesService.create(createLikeDto, session.userId);
+  @UseGuards(JwtGuard)
+  async create(@Body() dto: CreateLikeDto, @GetUser() user: CurrentUser) {
+    const like = await this.likesService.create(dto, user.id);
+
+    this.likesProducer.produceCreatedEvent(like);
+
+    return like;
   }
 
   @Delete(':postId')
-  @UseGuards(AuthGuard)
-  remove(@Param() param: RemoveLikeDto, @Session() session: ISession) {
-    return this.likesService.remove(param.postId, session.userId);
+  remove(@Param() dto: RemoveLikeDto, @GetUser() user: CurrentUser) {
+    return this.likesService.remove(dto, user.id);
   }
 }

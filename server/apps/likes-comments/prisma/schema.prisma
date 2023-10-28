@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../../../node_modules/@prisma-likes-comments/client"
 }
 
 datasource db {
@@ -11,7 +12,7 @@ datasource db {
 }
 
 model Post {
-  id String @id
+  id String @id @default(uuid())
 
   likes    Like[]
   comments Comment[]
@@ -27,9 +28,10 @@ model Like {
 }
 
 model Comment {
-  id       String @id @default(uuid())
-  username String
-  postId   String
+  id String @id @default(uuid())
+
+  userId String
+  postId String
 
   Post Post @relation(fields: [postId], references: [id])
 

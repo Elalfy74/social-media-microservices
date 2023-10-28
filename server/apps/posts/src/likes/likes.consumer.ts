@@ -1,43 +1,38 @@
 import {
-  CLikeCreatedEvent,
-  CLikeRemovedEvent,
+  type CLikeCreatedEvent,
+  type CLikeRemovedEvent,
   ConsumerService,
-  PrismaService,
+  PostsPrismaService,
   Topic,
-} from '@ms-social-media/common';
+} from '@app/common';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 
 @Injectable()
 export class LikesConsumer implements OnModuleInit {
   constructor(
+    private readonly prisma: PostsPrismaService,
     private readonly createdConsumer: ConsumerService<CLikeCreatedEvent>,
     private readonly removedConsumer: ConsumerService<CLikeRemovedEvent>,
-    private readonly prisma: PrismaService,
   ) {}
 
   async onModuleInit() {
-    await this.createdConsumer.consume({
-      topic: { topics: [Topic.LikeCreated] },
+    this.createdConsumer.consume({
+      topic: Topic.LikeCreated,
       config: { groupId: 'like-created-consumer' },
       onMessage: async (message) => {
         await this.prisma.like.create({
-          data: {
-            userId: message.value.userId,
-            postId: message.value.postId,
-          },
+          data: message.value,
         });
       },
     });
-    await this.removedConsumer.consume({
-      topic: { topics: [Topic.LikeRemoved] },
+
+    this.removedConsumer.consume({
+      topic: Topic.LikeRemoved,
       config: { groupId: 'like-removed-consumer' },
       onMessage: async (message) => {
         await this.prisma.like.delete({
           where: {
-            userId_postId: {
-              userId: message.value.userId,
-              postId: message.value.postId,
-            },
+            userId_postId: message.value,
           },
         });
       },

@@ -1,0 +1,123 @@
+services:
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    ports:
+      - '2181:2181'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    image: 'bitnami/kafka:3'
+    ports:
+      - '9092:9092'
+      - '29092:29092'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:29092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://localhost:29092
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+    depends_on:
+      - zookeeper
+    restart: on-failure
+
+  init-kafka:
+    image: 'bitnami/kafka:3'
+    depends_on:
+      - kafka
+    entrypoint: ['/bin/sh', '-c']
+    command: |
+      '
+      # blocks until kafka is reachable
+      kafka-topics.sh --bootstrap-server kafka:9092 --list
+      kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic post.created.topic  --replication-factor 1 --partitions 2
+
+      kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic like.created.topic  --replication-factor 1 --partitions 2 
+      kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic like.removed.topic  --replication-factor 1 --partitions 2
+
+      kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic comment.created.topic  --replication-factor 1 --partitions 2
+      echo -e 'Created kafka topics:'
+      kafka-topics.sh --bootstrap-server kafka:9092 --list
+      '
+
+  posts-db:
+    image: postgres:13
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: posts
+
+  posts:
+    build:
+      context: .
+      dockerfile: ./apps/posts/Dockerfile
+      target: development
+    command: yarn start:dev posts
+    env_file:
+      - ./apps/posts/.env.docker
+    depends_on:
+      - posts-db
+      - kafka
+      - zookeeper
+      - init-kafka
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3001:3001
+
+  likes-comments-db:
+    image: postgres:13
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: likes-comments
+
+  likes-comments:
+    build:
+      context: .
+      dockerfile: ./apps/likes-comments/Dockerfile
+      target: development
+    command: yarn start:dev likes-comments
+    env_file:
+      - ./apps/likes-comments/.env.docker
+    depends_on:
+      - likes-comments-db
+      - kafka
+      - zookeeper
+      - init-kafka
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3002:3002
+
+  auth-db:
+    image: postgres:13
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: auth
+
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: yarn start:dev auth
+    env_file:
+      - ./apps/auth/.env.docker
+    depends_on:
+      - auth-db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3000:3000
