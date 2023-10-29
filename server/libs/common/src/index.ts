@@ -5,5 +5,6 @@ export * from './guards';
 export * from './interceptors';
 export * from './interfaces';
 export * from './kafka';
+export * from './pipes';
 export * from './prisma';
 export * from './setup';

@@ -1,5 +1,15 @@
-import { CurrentUser, GetUser, JwtGuard, Serialize } from '@app/common';
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { CurrentUser, GetUser, ImageSize, JwtGuard, Serialize } from '@app/common';
+import {
+  Body,
+  Controller,
+  Get,
+  ParseFilePipe,
+  Post,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { CreatePostDto, PostDto } from './dtos';
 import { PostsProducer } from './posts.producer';
@@ -14,8 +24,18 @@ export class PostsController {
 
   @Post()
   @UseGuards(JwtGuard)
-  async create(@Body() dto: CreatePostDto, @GetUser() user: CurrentUser) {
-    const post = await this.postsService.create(dto, user.username);
+  @UseInterceptors(FileInterceptor('file'))
+  async create(
+    @Body() dto: CreatePostDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new ImageSize()],
+      }),
+    )
+    file: Express.Multer.File,
+    @GetUser() user: CurrentUser,
+  ) {
+    const post = await this.postsService.create(dto, file, user.username);
 
     this.postsProducer.productCreatedEvent(post);
 
