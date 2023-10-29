@@ -15,4 +15,8 @@ export class AuthResGenerator {
 
     return user;
   }
+
+  public static generateLogoutResponse(res: Response): void {
+    res.cookie('jwt', null, this.COOKIE_OPTIONS);
+  }
 }

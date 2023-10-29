@@ -18,6 +18,11 @@ export async function setup(app: INestApplication, title?: string) {
 
   app.use(cookieParser());
 
+  app.enableCors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  });
+
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT')!;
 

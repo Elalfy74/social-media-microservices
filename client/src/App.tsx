@@ -9,21 +9,21 @@ import { useAuth } from './store';
 const queryClient = new QueryClient();
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const checkAuth = useAuth((state) => state.checkAuth);
+  // const [isLoading, setIsLoading] = useState(true);
+  // const checkAuth = useAuth((state) => state.checkAuth);
 
-  useEffect(() => {
-    checkAuth().then(() => setIsLoading(false));
-  }, []);
+  // useEffect(() => {
+  //   checkAuth().then(() => setIsLoading(false));
+  // }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        {!isLoading && (
+        {/* {!isLoading && ( */}
           <MainLayout>
             <Home />
           </MainLayout>
-        )}
+        {/* )} */}
       </ThemeProvider>
     </QueryClientProvider>
   );

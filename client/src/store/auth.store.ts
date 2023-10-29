@@ -9,7 +9,7 @@ interface AuthState {
   currentUser: CurrentUser | null;
   signup: (loginInput: AuthInput) => Promise<void>;
   login: (loginInput: AuthInput) => Promise<void>;
-  signout: () => Promise<void>;
+  logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
 }
 
@@ -28,14 +28,14 @@ export const useAuth = create(
         set({ currentUser });
       },
 
-      signout: async () => {
-        await authService.signout();
+      logout: async () => {
+        await authService.logout();
         set({ currentUser: null });
       },
 
       checkAuth: async () => {
         try {
-          await authService.checkAuth();
+          await authService.getCurrentUser();
         } catch (e) {
           if (e instanceof AxiosError) {
             if (e.status === 401) {

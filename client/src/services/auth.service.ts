@@ -11,10 +11,10 @@ export const login = async (loginInput: AuthInput) => {
   return res.data;
 };
 
-export const signout = async () => {
-  await axios.post('/auth/signout');
+export const logout = async () => {
+  await axios.post('/auth/logout');
 };
 
-export const checkAuth = async () => {
-  return axios.get('/auth/checkauth');
+export const getCurrentUser = async () => {
+  return axios.get('/auth/current-user');
 };

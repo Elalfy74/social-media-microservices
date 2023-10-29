@@ -32,10 +32,10 @@ export class AuthController {
     return user;
   }
 
-  // @Post('signout')
-  // @HttpCode(200)
-  // signout(@Session() session: ISession) {
-  //   session.userId = null;
-  //   session.username = null;
-  // }
+  @Post('logout')
+  @UseGuards(JwtGuard)
+  @HttpCode(200)
+  logout(@Res({ passthrough: true }) res: Response) {
+    return AuthResGenerator.generateLogoutResponse(res);
+  }
 }

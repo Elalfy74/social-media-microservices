@@ -4,7 +4,7 @@ import { IconChevronDown } from '@tabler/icons-react';
 import { useAuth } from '@/store';
 
 export function LogoutMenu() {
-  const { currentUser, signout } = useAuth();
+  const { currentUser, logout: signout } = useAuth();
 
   return (
     <Menu shadow="md" width={200}>
