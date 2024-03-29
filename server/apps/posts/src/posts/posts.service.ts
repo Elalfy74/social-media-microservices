@@ -12,7 +12,13 @@ export class PostsService {
     private readonly storageService: StorageService,
   ) {}
 
-  async create(dto: CreatePostDto, file: Express.Multer.File, username: string): Promise<Post> {
+  async create(
+    dto: CreatePostDto,
+    file: Express.Multer.File | undefined,
+    username: string,
+  ): Promise<Post> {
+    if (!file) return this.prisma.post.create({ data: { ...dto, username, imageUrl: '' } });
+
     const imageUrl = await this.storageService.uploadFile(file);
 
     return this.prisma.post.create({

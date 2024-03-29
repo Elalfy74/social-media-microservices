@@ -1,3 +1,4 @@
+version: '2'
 services:
   zookeeper:
     image: 'bitnami/zookeeper:latest'
@@ -5,7 +6,6 @@ services:
       - '2181:2181'
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
-
   kafka:
     image: 'bitnami/kafka:3'
     ports:
@@ -21,7 +21,6 @@ services:
     depends_on:
       - zookeeper
     restart: on-failure
-
   init-kafka:
     image: 'bitnami/kafka:3'
     depends_on:
@@ -41,62 +40,6 @@ services:
       kafka-topics.sh --bootstrap-server kafka:9092 --list
       '
 
-  posts-db:
-    image: postgres:13
-    ports:
-      - 5432:5432
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: posts
-
-  posts:
-    build:
-      context: ./server
-      dockerfile: ./apps/posts/Dockerfile
-      target: development
-    command: yarn start:dev posts
-    env_file:
-      - ./server/apps/posts/.env.docker
-    depends_on:
-      - posts-db
-      - kafka
-      - zookeeper
-      - init-kafka
-    volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - 3001:3001
-
-  likes-comments-db:
-    image: postgres:13
-    ports:
-      - 5433:5432
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: likes-comments
-
-  likes-comments:
-    build:
-      context: ./server
-      dockerfile: ./apps/likes-comments/Dockerfile
-      target: development
-    command: yarn start:dev likes-comments
-    env_file:
-      - ./server/apps/likes-comments/.env.docker
-    depends_on:
-      - likes-comments-db
-      - kafka
-      - zookeeper
-      - init-kafka
-    volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - 3002:3002
-
   auth-db:
     image: postgres:13
     ports:
@@ -105,30 +48,108 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: auth
-
   auth:
-    build:
-      context: ./server
-      dockerfile: ./apps/auth/Dockerfile
-      target: development
-    command: yarn start:dev auth
-    env_file:
-      - ./server/apps/auth/.env.docker
-    depends_on:
-      - auth-db
-    volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules
+    image: mssocialmedia/auth
+    command: sh -c "apt-get update && apt-get install -y procps && npx prisma migrate deploy && npx prisma generate && yarn start:dev"
     ports:
       - 3000:3000
+    environment:
+      DATABASE_URL: postgresql://postgres:123@auth-db:5432/auth?schema=public
+      FRONTEND_URL: http://localhost:5173
+      PORT: 3000
+      SESSION_KEY: RANDOM_KKKKEY
+    volumes:
+      - ./app/auth/:/app
 
-  nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
     depends_on:
-      - auth
-      - likes-comments
-      - posts
+      - auth-db
+
+  posts-db:
+    image: postgres:13
+    ports:
+      - 5435:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: posts
+  posts:
+    image: mssocialmedia/posts
+    command: sh -c "apt-get update && apt-get install -y procps && npx prisma migrate deploy && npx prisma generate && yarn start:dev "
+    ports:
+      - 3001:3001
+    environment:
+      DATABASE_URL: postgresql://postgres:123@posts-db:5432/posts?schema=public
+      BROKER_URL: kafka:9092
+      FRONTEND_URL: http://localhost:5173
+      PORT: 3001
+      SESSION_KEY: RANDOM_KKKKEY
+      REGION: eu-central-1
+      ACCESS_KEY_ID: AKIAY4XTOBDMF5EPQ2JO
+      SECRET_ACCESS_KEY: 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
+      BUCKET_NAME: testthesaga6
+
+    volumes:
+      - ./app/posts/:/app
+
+    depends_on:
+      - posts-db
+      - kafka
+      - init-kafka
+
+  likes-comments-db:
+    image: postgres:13
+    ports:
+      - 5436:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: likes-comments
+  likes-comments:
+    image: mssocialmedia/likes-comments
+    command: sh -c "apt-get update && apt-get install -y procps && npx prisma migrate deploy && npx prisma generate && yarn start:dev "
+    ports:
+      - 3002:3002
+    environment:
+      DATABASE_URL: postgresql://postgres:123@likes-comments-db:5432/likes-comments?schema=public
+      BROKER_URL: kafka:9092
+      FRONTEND_URL: http://localhost:5173
+      PORT: 3002
+      SESSION_KEY: RANDOM_KKKKEY
+
+    volumes:
+      - ./app/likes-comments/:/app
+
+    depends_on:
+      - likes-comments-db
+      - kafka
+      - init-kafka
+
+  # nginx:
+  #   ports:
+  #     - "8070:80"
+  #   image: mohamedbedier/msnginx:v1
+  #   depends_on:
+  #     - auth
+  #     - posts
+  #     - likes-comments
+
+  # client:
+  #   image: mssocialmedia/client
+  #   command: sh -c "yarn dev --host"
+  #   ports:
+  #     - 5173:5173
+  #   environment:
+  #     VITE_BACKEND_URL: http://localhost:8070/api/
+  #   volumes:
+  #     - ./app/client/:/app
+  #   depends_on:
+  #     - nginx
+
+  client:
+    image: mohamedbedier/nginxfornt:v1
     ports:
       - 8070:80
+    depends_on:
+      - auth
+      - posts
+      - likes-comments

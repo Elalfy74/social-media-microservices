@@ -35,9 +35,7 @@ export const PostList = () => {
 
   return (
     <Stack spacing="lg" align="center">
-      {data.map((post) => (
-        <PostItem key={post.id} post={post} />
-      ))}
+      {Array.isArray(data) && data.map((post) => <PostItem key={post.id} post={post} />)}
     </Stack>
   );
 };

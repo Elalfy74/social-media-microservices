@@ -52,19 +52,18 @@ services:
 
   posts:
     build:
-      context: .
-      dockerfile: ./apps/posts/Dockerfile
-      target: development
-    command: yarn start:dev posts
+      context: ./server
+      dockerfile: ./apps/posts/Dockerfile.dev
+    command: sh -c "yarn push-posts-db && yarn g-db && yarn start:dev posts"
     env_file:
-      - ./apps/posts/.env.docker
+      - ./server/apps/posts/.env.docker
     depends_on:
       - posts-db
       - kafka
       - zookeeper
       - init-kafka
     volumes:
-      - .:/usr/src/app
+      - ./server:/usr/src/app
       - /usr/src/app/node_modules
     ports:
       - 3001:3001
@@ -80,19 +79,19 @@ services:
 
   likes-comments:
     build:
-      context: .
-      dockerfile: ./apps/likes-comments/Dockerfile
+      context: ./server
+      dockerfile: ./apps/likes-comments/Dockerfile.dev
       target: development
-    command: yarn start:dev likes-comments
+    command: sh -c "yarn push-likes-comments-db && yarn g-db && yarn start:dev likes-comments"
     env_file:
-      - ./apps/likes-comments/.env.docker
+      - ./server/apps/likes-comments/.env.docker
     depends_on:
       - likes-comments-db
       - kafka
       - zookeeper
       - init-kafka
     volumes:
-      - .:/usr/src/app
+      - ./server:/usr/src/app
       - /usr/src/app/node_modules
     ports:
       - 3002:3002
@@ -108,16 +107,27 @@ services:
 
   auth:
     build:
-      context: .
-      dockerfile: ./apps/auth/Dockerfile
+      context: ./server
+      dockerfile: ./apps/auth/Dockerfile.dev
       target: development
-    command: yarn start:dev auth
+    command: sh -c "yarn push-auth-db && yarn g-db && yarn start:dev auth"
     env_file:
-      - ./apps/auth/.env.docker
+      - ./server/apps/auth/.env.docker
     depends_on:
       - auth-db
     volumes:
-      - .:/usr/src/app
+      - ./server:/usr/src/app
       - /usr/src/app/node_modules
     ports:
       - 3000:3000
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+    depends_on:
+      - auth
+      - likes-comments
+      - posts
+    ports:
+      - 8070:80

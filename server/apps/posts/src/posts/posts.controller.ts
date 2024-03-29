@@ -27,13 +27,14 @@ export class PostsController {
   @UseInterceptors(FileInterceptor('file'))
   async create(
     @Body() dto: CreatePostDto,
+    @GetUser() user: CurrentUser,
     @UploadedFile(
       new ParseFilePipe({
         validators: [new ImageSize()],
+        fileIsRequired: false,
       }),
     )
-    file: Express.Multer.File,
-    @GetUser() user: CurrentUser,
+    file?: Express.Multer.File,
   ) {
     const post = await this.postsService.create(dto, file, user.username);
 

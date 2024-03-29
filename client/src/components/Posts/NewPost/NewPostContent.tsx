@@ -15,7 +15,7 @@ const preview = (file: FileWithPath) => {
 
 const schema = zfd.formData({
   title: z.string().min(2, { message: 'Title Must be at least 2 characters' }),
-  file: z.array(zfd.file()).nonempty(),
+  file: z.array(zfd.file()).optional(),
 });
 
 export function NewPostContent({ handleClose }: { handleClose: () => void }) {
@@ -33,7 +33,10 @@ export function NewPostContent({ handleClose }: { handleClose: () => void }) {
     mutationFn: (createPostInput: CreatePostInput) => {
       const formData = new FormData();
 
-      formData.append('file', createPostInput.file);
+      if (createPostInput.file) {
+        formData.append('file', createPostInput.file);
+      }
+
       formData.append('title', createPostInput.title);
 
       return createPost(formData);

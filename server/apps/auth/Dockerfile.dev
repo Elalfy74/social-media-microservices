@@ -1,0 +1,15 @@
+FROM node:18-alpine3.16 As development
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN yarn
+
+COPY . .
+
+ENV DATABASE_URL=${DATABASE_URL}
+
+RUN yarn g-auth-db
+
+CMD ["yarn", "start:dev", "auth"]
